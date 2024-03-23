@@ -2,9 +2,6 @@
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["femder"]
-
 [project]
 name = "femder"
 version = "0.0.1"
