@@ -33,7 +33,7 @@ Installation
 
    .. code::
 
-      $ pip install git+https://github.com/gutoalvim/femder.git
+      $ pip install git+https://github.com/jvcarli/femder.git
 
 4. Install your IDE of choice, Jupyter Notebook is great to run this package and do your work in an organized fashion. You can install it using:
 
