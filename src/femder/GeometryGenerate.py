@@ -12,8 +12,10 @@ import sys
 import os
 
 
-class GeometryGenerator():
-    def __init__(self, AP, fmax=1000, num_freq=6, scale=1, order=1, S=None, R=None, plot=False):
+class GeometryGenerator:
+    def __init__(
+        self, AP, fmax=1000, num_freq=6, scale=1, order=1, S=None, R=None, plot=False
+    ):
         self.R_ = R
         self.S_ = S
         self.fmax = fmax
@@ -45,14 +47,14 @@ class GeometryGenerator():
         # pts = np.array([[0,0],[2,0],[3,0],[3,2],[3,4],[2,4],[0,4]])
         # gmsh.finalize()
         gmsh.initialize()
-        gmsh.model.add('gen_geom.geo')
+        gmsh.model.add("gen_geom.geo")
         pts_sym = pts.copy()
         pts_sym[:, 0] = -pts_sym[:, 0]
         tagg = []
         for i in range(len(pts)):
             tag = 200 + i
             tag2 = 1000 + i
-            gmsh.model.occ.addPoint(pts[i, 0], pts[i, 1], 0, 0., tag)
+            gmsh.model.occ.addPoint(pts[i, 0], pts[i, 1], 0, 0.0, tag)
             # print(tag)
             if i > 0:
                 #     # print(tag[i],tag[i-1])
@@ -63,7 +65,7 @@ class GeometryGenerator():
         for i in range(len(pts_sym)):
             tag = 2000 + i
             tag2 = 10000 + i
-            gmsh.model.occ.addPoint(pts_sym[i, 0], pts_sym[i, 1], 0, 0., tag)
+            gmsh.model.occ.addPoint(pts_sym[i, 0], pts_sym[i, 1], 0, 0.0, tag)
             # print(tag)
             if i > 0:
                 #     # print(tag[i],tag[i-1])
@@ -99,10 +101,15 @@ class GeometryGenerator():
         # gmsh.model.occ.addVolume(tggv.sort,-1)
         gmsh.model.addPhysicalGroup(3, [1], -1)
         gmsh.model.addPhysicalGroup(2, tggv, -1)
-        # 
+        #
 
-        gmsh.option.setNumber("Mesh.MeshSizeMax", (self.c0 * self.S_cale) / self.fmax / self.num_freq)
-        gmsh.option.setNumber("Mesh.MeshSizeMin", 0.1 * (self.c0 * self.S_cale) / self.fmax / self.num_freq)
+        gmsh.option.setNumber(
+            "Mesh.MeshSizeMax", (self.c0 * self.S_cale) / self.fmax / self.num_freq
+        )
+        gmsh.option.setNumber(
+            "Mesh.MeshSizeMin",
+            0.1 * (self.c0 * self.S_cale) / self.fmax / self.num_freq,
+        )
         gmsh.option.setNumber("Mesh.Algorithm", 1)
 
         # print((self.c0*self.S_cale)/self.fmax/self.num_freq)
@@ -111,31 +118,52 @@ class GeometryGenerator():
         # tg2 = gmsh.model.occ.getEntities(2)
         if self.R_ != None:
             for i in range(len(self.R_.coord)):
-                it = gmsh.model.occ.addPoint(self.R_.coord[i, 0], self.R_.coord[i, 1], self.R_.coord[i, 2], lc, -1)
+                it = gmsh.model.occ.addPoint(
+                    self.R_.coord[i, 0],
+                    self.R_.coord[i, 1],
+                    self.R_.coord[i, 2],
+                    lc,
+                    -1,
+                )
                 gmsh.model.occ.synchronize()
                 gmsh.model.mesh.embed(0, [it], 3, tg[0][1])
 
         if self.S_ != None:
             for i in range(len(self.S_.coord)):
-                it = gmsh.model.occ.addPoint(self.S_.coord[i, 0], self.S_.coord[i, 1], self.S_.coord[i, 2], lc, -1)
+                it = gmsh.model.occ.addPoint(
+                    self.S_.coord[i, 0],
+                    self.S_.coord[i, 1],
+                    self.S_.coord[i, 2],
+                    lc,
+                    -1,
+                )
                 gmsh.model.occ.synchronize()
                 gmsh.model.mesh.embed(0, [it], 3, tg[0][1])
 
         # gmsh.model.mesh.embed(0, [15000], 3, tg[0][1])
         gmsh.model.mesh.generate(3)
         gmsh.model.mesh.setOrder(self.order)
-        gmsh.write('current_mesh.msh')
-        gmsh.write('current_mesh.vtk')
+        gmsh.write("current_mesh.msh")
+        gmsh.write("current_mesh.vtk")
 
-        gmsh.write('current_mesh.brep')
+        gmsh.write("current_mesh.brep")
         if self.plot:
             gmsh.fltk.run()
         gmsh.model.occ.synchronize()
         gmsh.clear()
 
         # gmsh.write('current_geo2.geo_unrolled')
-        Grid = fd.GridImport3D(self.AP, 'current_mesh.brep', S=self.S_, R=self.R_, fmax=self.fmax,
-                               num_freq=self.num_freq, order=self.order, scale=self.S_cale, plot=self.plot)
+        Grid = fd.GridImport3D(
+            self.AP,
+            "current_mesh.brep",
+            S=self.S_,
+            R=self.R_,
+            fmax=self.fmax,
+            num_freq=self.num_freq,
+            order=self.order,
+            scale=self.S_cale,
+            plot=self.plot,
+        )
         self.nos = Grid.nos
         self.elem_surf = Grid.elem_surf
         self.elem_vol = Grid.elem_vol
@@ -149,7 +177,7 @@ class GeometryGenerator():
         self.path_to_geo = Grid.path_to_geo
 
         current_path = os.getcwd()
-        self.path_to_geo_unrolled = current_path + '\\current_mesh.brep'
+        self.path_to_geo_unrolled = current_path + "\\current_mesh.brep"
 
         try:
             gmsh.finalize()
@@ -161,7 +189,9 @@ class GeometryGenerator():
         line_tags = []
         surface_tags = []
         for i in range(len(all_points)):
-            temp_tag = gmsh.model.occ.addPoint(all_points[i, 0], all_points[i, 1], z, 0., -1)
+            temp_tag = gmsh.model.occ.addPoint(
+                all_points[i, 0], all_points[i, 1], z, 0.0, -1
+            )
             point_tags.append(temp_tag)
             # print(tag)
             if i > 0:
@@ -202,8 +232,13 @@ class GeometryGenerator():
         # time.sleep(0.0)
         gmsh.initialize(sys.argv)
         gmsh.clear()
-        gmsh.option.setNumber("Mesh.MeshSizeMax", (self.c0 * self.S_cale) / self.fmax / self.num_freq)
-        gmsh.option.setNumber("Mesh.MeshSizeMin", 0.1 * (self.c0 * self.S_cale) / self.fmax / self.num_freq)
+        gmsh.option.setNumber(
+            "Mesh.MeshSizeMax", (self.c0 * self.S_cale) / self.fmax / self.num_freq
+        )
+        gmsh.option.setNumber(
+            "Mesh.MeshSizeMin",
+            0.1 * (self.c0 * self.S_cale) / self.fmax / self.num_freq,
+        )
         gmsh.option.setNumber("Mesh.Algorithm", 1)
         gmsh.option.setNumber("Mesh.Algorithm3D", 6)
         gmsh.model.mesh.setOrder(self.order)
@@ -219,24 +254,37 @@ class GeometryGenerator():
         tag1 = []
         tag_pts = []
 
-
-        floor_tags, floor_line_tags, flor_surface = self.build_surface_from_points(all_points, 0)
-        ceiling_tag, ceiling_line_tags, ceiling_surface = self.build_surface_from_points(all_points, height)
+        floor_tags, floor_line_tags, flor_surface = self.build_surface_from_points(
+            all_points, 0
+        )
+        ceiling_tag, ceiling_line_tags, ceiling_surface = (
+            self.build_surface_from_points(all_points, height)
+        )
 
         line_tag = []
         surface_entities = flor_surface + ceiling_surface
-        for i in range(len(floor_tags)+1):
+        for i in range(len(floor_tags) + 1):
             if i < len(floor_tags):
                 _line_tag = gmsh.model.occ.addLine(floor_tags[i], ceiling_tag[i], -1)
                 line_tag.append(_line_tag)
             gmsh.model.occ.synchronize()
             if i > 1:
-                temp_tags = [floor_line_tags[i-2],line_tag[i-1], -ceiling_line_tags[i-2],line_tag[i-2]]
+                temp_tags = [
+                    floor_line_tags[i - 2],
+                    line_tag[i - 1],
+                    -ceiling_line_tags[i - 2],
+                    line_tag[i - 2],
+                ]
                 _it = gmsh.model.occ.addCurveLoop(temp_tags, -1)
                 it = gmsh.model.occ.addSurfaceFilling(_it, -1)
                 surface_entities.append(it)
                 gmsh.model.occ.synchronize()
-        temp_tags = [floor_line_tags[-1], line_tag[-1], -ceiling_line_tags[-1], line_tag[0]]
+        temp_tags = [
+            floor_line_tags[-1],
+            line_tag[-1],
+            -ceiling_line_tags[-1],
+            line_tag[0],
+        ]
         _it = gmsh.model.occ.addCurveLoop(temp_tags, -1)
         it = gmsh.model.occ.addSurfaceFilling(_it, -1)
         surface_entities.append(it)
@@ -285,7 +333,9 @@ class GeometryGenerator():
         gmsh.fltk.run()
         # gmsh.model.occ.removeAllDuplicates()
         # gmsh.model.geo.extrude([(3,15001)],dx=0,dy=0,dz = zmax)
-        a = gmsh.model.occ.extrude([(2, 1454356)], dx=0, dy=0, dz=height, recombine=False)
+        a = gmsh.model.occ.extrude(
+            [(2, 1454356)], dx=0, dy=0, dz=height, recombine=False
+        )
         gmsh.model.occ.synchronize()
 
         # gmsh.model.occ.remove([(3,1)])
@@ -432,9 +482,11 @@ class GeometryGenerator():
         self.NumNosC = len(self.nos)
         self.NumElemC = len(self.elem_vol)
         import plotly.io as pio
+
         pio.renderers.default = "browser"
         import plotly.figure_factory as ff
         import plotly.graph_objs as go
+
         vertices = self.nos.T  # [np.unique(self.elem_surf)].T
         elements = self.elem_surf.T
         fig = ff.create_trisurf(
@@ -444,15 +496,15 @@ class GeometryGenerator():
             simplices=elements.T,
             color_func=elements.shape[1] * ["rgb(255, 222, 173)"],
         )
-        fig['data'][0].update(opacity=0.3)
+        fig["data"][0].update(opacity=0.3)
 
-        fig['layout']['scene'].update(go.layout.Scene(aspectmode='data'))
+        fig["layout"]["scene"].update(go.layout.Scene(aspectmode="data"))
         fig.show()
         gmsh.fltk.run()
         gmsh.finalize()
 
         # if self.plot:s
-        #     gmsh.fltk.run()  
+        #     gmsh.fltk.run()
 
         # gmsh.write('current_geo.geo_unrolled')
 
@@ -462,7 +514,9 @@ class GeometryGenerator():
 def embed_points_in_mesh(factory, embed_points):
     lc = 0
     for i in range(len(embed_points)):
-        it = gmsh.model.occ.addPoint(embed_points[i, 0], embed_points[i, 1], embed_points[i, 2], lc, -1)
+        it = gmsh.model.occ.addPoint(
+            embed_points[i, 0], embed_points[i, 1], embed_points[i, 2], lc, -1
+        )
         factory.synchronize()
         gmsh.model.mesh.embed(0, [it], 3, gmsh.model.occ.getEntities(3)[0][1])
 
@@ -485,7 +539,7 @@ def extract_mesh_data_from_gmsh(dim, order, mesh_data):
     # gmsh.fltk.run()
     gmsh.model.mesh.generate(dim=dim)
     gmsh.model.mesh.setOrder(order)
-    mesh_data['order'] = order
+    mesh_data["order"] = order
     if order == 1:
         order_volume_dimension = 4
         order_surface_dimension = 3
@@ -498,17 +552,20 @@ def extract_mesh_data_from_gmsh(dim, order, mesh_data):
 
     if dim == 3:
         _, _, node_tags = gmsh.model.mesh.getElements(3)
-        mesh_data['volume_elements'] = np.array(node_tags, dtype=int).reshape(-1, order_volume_dimension) - 1
+        mesh_data["volume_elements"] = (
+            np.array(node_tags, dtype=int).reshape(-1, order_volume_dimension) - 1
+        )
     elif dim == 2:
-        mesh_data['volume_elements'] = []
+        mesh_data["volume_elements"] = []
     elif dim != 2 or dim != 3:
         raise ValueError(f"Dim must be 2 or 3")
 
     _, _, node_tags_surface = gmsh.model.mesh.getElements(2)
-    mesh_data['elements'] = (np.array(node_tags_surface, dtype=int).reshape(-1, order_surface_dimension) - 1).T.astype(
-        "uint32")
+    mesh_data["elements"] = (
+        np.array(node_tags_surface, dtype=int).reshape(-1, order_surface_dimension) - 1
+    ).T.astype("uint32")
     _, vertices_xyz, _ = gmsh.model.mesh.getNodes()
-    mesh_data['vertices'] = vertices_xyz.reshape((-1, 3)).T
+    mesh_data["vertices"] = vertices_xyz.reshape((-1, 3)).T
     pg = gmsh.model.getPhysicalGroups(2)
     tg2 = gmsh.model.occ.getEntities(2)
 
@@ -522,7 +579,7 @@ def extract_mesh_data_from_gmsh(dim, order, mesh_data):
             va = np.hstack((va, vvv))
             vpg = np.hstack((vpg, pgones))
     vas = np.argsort(va)
-    mesh_data['domain_indices'] = vpg[vas]
+    mesh_data["domain_indices"] = vpg[vas]
     # print(vas)
     if dim == 3:
         pgv = gmsh.model.getPhysicalGroups(3)
@@ -537,9 +594,9 @@ def extract_mesh_data_from_gmsh(dim, order, mesh_data):
                 vpgv = np.hstack((vpgv, pgones))
 
         vasv = np.argsort(vav)
-        mesh_data['domain_indices_volume'] = vpgv[vasv]
+        mesh_data["domain_indices_volume"] = vpgv[vasv]
     elif dim == 2:
-        mesh_data['domain_indices_volume'] = []
+        mesh_data["domain_indices_volume"] = []
 
 
 if __name__ == "__main__":
@@ -558,7 +615,6 @@ if __name__ == "__main__":
     BC = fd.BC(AC, AP)
     BC.normalized_admittance(2, 0.02)
 
-
     def optim_fun(X):
         if X[1] < (X[0] + X[3]) / 2:
             y = 10e6
@@ -568,37 +624,54 @@ if __name__ == "__main__":
             X = X / d_change  # Divide pela escala
             X[-1] = X[-1] / 10
             # try:
-            pts = np.array([[0, 0], [X[0], 0], [X[1], X[2]], [X[3], X[4]],
-                            [0, X[4]]])  # Montando os vértices da geometria com varíaveis da função
+            pts = np.array(
+                [[0, 0], [X[0], 0], [X[1], X[2]], [X[3], X[4]], [0, X[4]]]
+            )  # Montando os vértices da geometria com varíaveis da função
             height = X[5]
             angle = X[6]
-            grid = fd.GeometryGenerator(AP, fmax=150, num_freq=7, plot=False)  # Gera objeto da geometria
+            grid = fd.GeometryGenerator(
+                AP, fmax=150, num_freq=7, plot=False
+            )  # Gera objeto da geometria
             # # grid.generate_symmetric_polygon(pts, height) #Criando geometria a partir dos vétrices.
             grid.generate_symmetric_polygon_variheight(pts, height, angle)
 
-            obj = fd.FEM3D(grid, S=None, R=None, AP=AP, AC=AC, BC=BC)  # Cria objeto de simulação
+            obj = fd.FEM3D(
+                grid, S=None, R=None, AP=AP, AC=AC, BC=BC
+            )  # Cria objeto de simulação
 
             # #Otimiza posição de fonte-receptor
-            obj.optimize_source_receiver_pos([3, 3], fmin=20, fmax=150, star_average=True,
-                                             minimum_distance_between_speakers=1.5,
-                                             max_distance_from_wall=0.9, speaker_receiver_height=1.24,
-                                             min_distance_from_backwall=0.7, max_distance_from_backwall=1,
-                                             method='direct', neigs=200, plot_geom=False, renderer='notebook',
-                                             print_info=False, saveFig=False, camera_angles=['diagonal_front'],
-                                             plot_evaluate=False, plotBest=False)
+            obj.optimize_source_receiver_pos(
+                [3, 3],
+                fmin=20,
+                fmax=150,
+                star_average=True,
+                minimum_distance_between_speakers=1.5,
+                max_distance_from_wall=0.9,
+                speaker_receiver_height=1.24,
+                min_distance_from_backwall=0.7,
+                max_distance_from_backwall=1,
+                method="direct",
+                neigs=200,
+                plot_geom=False,
+                renderer="notebook",
+                print_info=False,
+                saveFig=False,
+                camera_angles=["diagonal_front"],
+                plot_evaluate=False,
+                plotBest=False,
+            )
 
             y = obj.bestMetric
-            print(f'Fitness Metric: {y}')
+            print(f"Fitness Metric: {y}")
             fitness.append(y)
             present_X.append(X)
-            np.save('checkpoint_current.npy', algorithm)
-            np.savetxt('fitness_current.txt', fitness)
-            np.savetxt('present_X_current.txt', present_X)
+            np.save("checkpoint_current.npy", algorithm)
+            np.savetxt("fitness_current.txt", fitness)
+            np.savetxt("present_X_current.txt", present_X)
         except Exception as e:
             y = 10e6
             print(e)
         return y
-
 
     L = np.array([1.55, 1.85, 1]) * 2.96  # Vértices do retângulo
     X = np.array([L[0] / 2, L[0] / 2, L[1] / 2, L[0] / 2, L[1], L[2] * 1.2, 0])
@@ -610,46 +683,64 @@ if __name__ == "__main__":
     Xmax[-1] = np.pi / 20
 
     varbound = np.vstack((Xmin, Xmax)).T  # Colocando a váriveis em colunas
-    varbound = varbound * d_change  # Multiplica varíaveis por uma escala, determinando a casa decimal em que mudanças ocorrerão nos parâmetros da sala
+    varbound = (
+        varbound * d_change
+    )  # Multiplica varíaveis por uma escala, determinando a casa decimal em que mudanças ocorrerão nos parâmetros da sala
     varbound[-1] = 10 * varbound[-1]
     # varbound=np.int64(varbound)
 
     fitness = []
     present_X = []
-    functional_problem = FunctionalProblem(n_var=7,
-                                           objs=optim_fun,
-                                           xl=varbound[:, 0],
-                                           xu=varbound[:, 1],
-                                           type_var=np.int16)
-
+    functional_problem = FunctionalProblem(
+        n_var=7, objs=optim_fun, xl=varbound[:, 0], xu=varbound[:, 1], type_var=np.int16
+    )
 
     def optim_plot(X):
         X = X / d_change  # Divide pela escala
         X[-1] = X[-1] / 10
         # try:
-        pts = np.array([[0, 0], [X[0], 0], [X[1], X[2]], [X[3], X[4]],
-                        [0, X[4]]])  # Montando os vértices da geometria com varíaveis da função
+        pts = np.array(
+            [[0, 0], [X[0], 0], [X[1], X[2]], [X[3], X[4]], [0, X[4]]]
+        )  # Montando os vértices da geometria com varíaveis da função
         height = X[5]
         angle = X[6]
         # grid = fd.GeometryGenerator(AP, fmax=150, num_freq=12, plot=False)  # Gera objeto da geometria
         # # # grid.generate_symmetric_polygon(pts, height) #Criando geometria a partir dos vétrices.
         # grid.generate_symmetric_polygon_variheight(pts, height, angle)
 
-        obj = fd.FEM3D(None, S=None, R=None, AP=AP, AC=AC, BC=BC)  # Cria objeto de simulação
+        obj = fd.FEM3D(
+            None, S=None, R=None, AP=AP, AC=AC, BC=BC
+        )  # Cria objeto de simulação
         # obj.plot_problem()
         # #Otimiza posição de fonte-receptor
-        obj.optimize_source_receiver_pos(pts, height, angle, 6, [3, 3], fmin=20, fmax=150, star_average=True,
-                                         minimum_distance_between_speakers=1.15,
-                                         max_distance_from_wall=0.9, speaker_receiver_height=1.24,
-                                         min_distance_from_backwall=0.5, max_distance_from_backwall=0.9,
-                                         method='direct', neigs=200, plot_geom=False, renderer='notebook',
-                                         print_info=False, saveFig=False, camera_angles=['diagonal_front'],
-                                         plot_evaluate=False, plotBest=False)
+        obj.optimize_source_receiver_pos(
+            pts,
+            height,
+            angle,
+            6,
+            [3, 3],
+            fmin=20,
+            fmax=150,
+            star_average=True,
+            minimum_distance_between_speakers=1.15,
+            max_distance_from_wall=0.9,
+            speaker_receiver_height=1.24,
+            min_distance_from_backwall=0.5,
+            max_distance_from_backwall=0.9,
+            method="direct",
+            neigs=200,
+            plot_geom=False,
+            renderer="notebook",
+            print_info=False,
+            saveFig=False,
+            camera_angles=["diagonal_front"],
+            plot_evaluate=False,
+            plotBest=False,
+        )
 
         y = obj.bestMetric
-        print(f'Fitness Metric: {y}')
+        print(f"Fitness Metric: {y}")
         return obj
-
 
     from pymoo.algorithms.moo.nsga2 import NSGA2
     from pymoo.factory import get_sampling, get_crossover, get_mutation
@@ -661,16 +752,18 @@ if __name__ == "__main__":
     from pymoo.optimize import minimize
 
     # np.savetxt(f'time_taken_{time.strftime("%Y%m%d-%H%M%S")}_FINAL.txt',then-time.time())
-    dir_ = r'D:\Documents\UFSM\MNAV\Applied Acoustics\Optimizer\checkpoint_20211021-115238.npy'
-    algorithm, = np.load(dir_, allow_pickle=True).flatten()
+    dir_ = r"D:\Documents\UFSM\MNAV\Applied Acoustics\Optimizer\checkpoint_20211021-115238.npy"
+    (algorithm,) = np.load(dir_, allow_pickle=True).flatten()
 
     algorithm.has_terminated = True
-    res = minimize(functional_problem,
-                   algorithm,
-                   termination,
-                   seed=1,
-                   save_history=True,
-                   copy_algorithm=False,
-                   verbose=True)
+    res = minimize(
+        functional_problem,
+        algorithm,
+        termination,
+        seed=1,
+        save_history=True,
+        copy_algorithm=False,
+        verbose=True,
+    )
 
     optim_plot(res.X)

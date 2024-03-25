@@ -4,6 +4,7 @@ Created on Mon Dec 28 11:58:35 2020
 
 @author: gutoa
 """
+
 from __future__ import division, print_function
 import numpy as np
 
@@ -11,6 +12,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 import matplotlib.ticker as ticker
 import scipy.signal.windows as win
+
+
 def len_unique_items_dict(dict_obj):
     """
     Computes biggest unique for dict
@@ -40,8 +43,10 @@ def bigger_than_n_unique_dict(dict_obj, n):
     -------
     Array of indexes
     """
-    bool_obj = np.asarray(list(dict_obj.items()), dtype='object')[:, 1]
-    unique_len = np.argwhere(np.asarray([len(np.unique(bool_obj[i])) for i in range(len(bool_obj))]) > n).ravel()
+    bool_obj = np.asarray(list(dict_obj.items()), dtype="object")[:, 1]
+    unique_len = np.argwhere(
+        np.asarray([len(np.unique(bool_obj[i])) for i in range(len(bool_obj))]) > n
+    ).ravel()
     return unique_len
 
 
@@ -62,7 +67,7 @@ def timer_func(func):
         result = func(*args, **kwargs)
         t2 = time()
         if not rasta.HIDE_PBAR:
-            print(f'Function {func.__name__!r} executed in {(t2 - t1):.4f}s')
+            print(f"Function {func.__name__!r} executed in {(t2 - t1):.4f}s")
         return result
 
     return wrap_func
@@ -100,8 +105,18 @@ def closest_node(array, value):
     idx = (np.abs(array - value)).argmin()
     return idx
 
-def detect_peaks(x, mph=None, mpd=1, threshold=0, edge='rising',
-                 kpsh=False, valley=False, show=False, ax=None):
+
+def detect_peaks(
+    x,
+    mph=None,
+    mpd=1,
+    threshold=0,
+    edge="rising",
+    kpsh=False,
+    valley=False,
+    show=False,
+    ax=None,
+):
     """Detect peaks in data based on their amplitude and other features.
 
     Parameters
@@ -184,7 +199,7 @@ def detect_peaks(x, mph=None, mpd=1, threshold=0, edge='rising',
 
     """
 
-    x = np.atleast_1d(x).astype('float64')
+    x = np.atleast_1d(x).astype("float64")
     if x.size < 3:
         return np.array([], dtype=int)
     if valley:
@@ -202,15 +217,19 @@ def detect_peaks(x, mph=None, mpd=1, threshold=0, edge='rising',
     if not edge:
         ine = np.where((np.hstack((dx, 0)) < 0) & (np.hstack((0, dx)) > 0))[0]
     else:
-        if edge.lower() in ['rising', 'both']:
+        if edge.lower() in ["rising", "both"]:
             ire = np.where((np.hstack((dx, 0)) <= 0) & (np.hstack((0, dx)) > 0))[0]
-        if edge.lower() in ['falling', 'both']:
+        if edge.lower() in ["falling", "both"]:
             ife = np.where((np.hstack((dx, 0)) < 0) & (np.hstack((0, dx)) >= 0))[0]
     ind = np.unique(np.hstack((ine, ire, ife)))
     # handle NaN's
     if ind.size and indnan.size:
         # NaN's and values close to NaN's cannot be peaks
-        ind = ind[np.in1d(ind, np.unique(np.hstack((indnan, indnan - 1, indnan + 1))), invert=True)]
+        ind = ind[
+            np.in1d(
+                ind, np.unique(np.hstack((indnan, indnan - 1, indnan + 1))), invert=True
+            )
+        ]
     # first and last values of x cannot be peaks
     if ind.size and ind[0] == 0:
         ind = ind[1:]
@@ -230,8 +249,9 @@ def detect_peaks(x, mph=None, mpd=1, threshold=0, edge='rising',
         for i in range(ind.size):
             if not idel[i]:
                 # keep peaks with the same height if kpsh is True
-                idel = idel | (ind >= ind[i] - mpd) & (ind <= ind[i] + mpd) \
-                       & (x[ind[i]] > x[ind] if kpsh else True)
+                idel = idel | (ind >= ind[i] - mpd) & (ind <= ind[i] + mpd) & (
+                    x[ind[i]] > x[ind] if kpsh else True
+                )
                 idel[i] = 0  # Keep current peak
         # remove the small peaks and sort back the indices by their occurrence
         ind = np.sort(ind[~idel])
@@ -253,32 +273,55 @@ def _plot(x, mph, mpd, threshold, edge, valley, ax, ind):
     try:
         import matplotlib.pyplot as plt
     except ImportError:
-        print('matplotlib is not available.')
+        print("matplotlib is not available.")
     else:
         if ax is None:
             _, ax = plt.subplots(1, 1, figsize=(8, 4))
 
-        ax.plot(x, 'b', lw=1)
+        ax.plot(x, "b", lw=1)
         if ind.size:
-            label = 'valley' if valley else 'peak'
-            label = label + 's' if ind.size > 1 else label
-            ax.plot(ind, x[ind], '+', mfc=None, mec='r', mew=2, ms=8,
-                    label='%d %s' % (ind.size, label))
-            ax.legend(loc='best', framealpha=.5, numpoints=1)
-        ax.set_xlim(-.02 * x.size, x.size * 1.02 - 1)
+            label = "valley" if valley else "peak"
+            label = label + "s" if ind.size > 1 else label
+            ax.plot(
+                ind,
+                x[ind],
+                "+",
+                mfc=None,
+                mec="r",
+                mew=2,
+                ms=8,
+                label="%d %s" % (ind.size, label),
+            )
+            ax.legend(loc="best", framealpha=0.5, numpoints=1)
+        ax.set_xlim(-0.02 * x.size, x.size * 1.02 - 1)
         ymin, ymax = x[np.isfinite(x)].min(), x[np.isfinite(x)].max()
         yrange = ymax - ymin if ymax > ymin else 1
         ax.set_ylim(ymin - 0.1 * yrange, ymax + 0.1 * yrange)
-        ax.set_xlabel('Data #', fontsize=14)
-        ax.set_ylabel('Amplitude', fontsize=14)
-        mode = 'Valley detection' if valley else 'Peak detection'
-        ax.set_title("%s (mph=%s, mpd=%d, threshold=%s, edge='%s')"
-                     % (mode, str(mph), mpd, str(threshold), edge))
+        ax.set_xlabel("Data #", fontsize=14)
+        ax.set_ylabel("Amplitude", fontsize=14)
+        mode = "Valley detection" if valley else "Peak detection"
+        ax.set_title(
+            "%s (mph=%s, mpd=%d, threshold=%s, edge='%s')"
+            % (mode, str(mph), mpd, str(threshold), edge)
+        )
         # plt.grid()
         plt.show()
-        
-def SBIR(IR, t_IR, fmin, fmax, winCheck=False, spectraCheck=False, ms=32, method='constant', beta=1, cosWin=False,
-         ABEC=False, delta_ABEC=52):
+
+
+def SBIR(
+    IR,
+    t_IR,
+    fmin,
+    fmax,
+    winCheck=False,
+    spectraCheck=False,
+    ms=32,
+    method="constant",
+    beta=1,
+    cosWin=False,
+    ABEC=False,
+    delta_ABEC=52,
+):
     """
 
     Function to calculate Speaker Boundary Interference Response
@@ -302,11 +345,11 @@ def SBIR(IR, t_IR, fmin, fmax, winCheck=False, spectraCheck=False, ms=32, method
     """
 
     if len(IR) < 20:
-        print('IR resolution not high enough to calculate SBIR')
+        print("IR resolution not high enough to calculate SBIR")
 
-    if method == 'constant':
+    if method == "constant":
         peak = 0  # Window from the start of the IR
-        dt = (max(t_IR) / len(t_IR))  # Time axis resolution
+        dt = max(t_IR) / len(t_IR)  # Time axis resolution
         tt_ms = round((ms / 1000) / dt)  # Number of samples equivalent to 64 ms
 
         # Windows
@@ -320,19 +363,21 @@ def SBIR(IR, t_IR, fmin, fmax, winCheck=False, spectraCheck=False, ms=32, method
 
         window = np.zeros((len(IR[:])))  # Final window
         ##
-        win_cos[0:int(tt_ms)] = 1
-        window[0:int(2 * tt_ms)] = win_cos
+        win_cos[0 : int(tt_ms)] = 1
+        window[0 : int(2 * tt_ms)] = win_cos
         ##
 
-    elif method == 'peak':
+    elif method == "peak":
         # Sample of the initial peak
-        peak = detect_peaks(IR, mph=(max(IR) * 0.9), threshold=0, edge='rising', show=False)
+        peak = detect_peaks(
+            IR, mph=(max(IR) * 0.9), threshold=0, edge="rising", show=False
+        )
         if len(peak) > 1:
             peak = peak[0]
             # print('More than one peak at the IR')
         #        ind[x] = 0; # Window max from the beginning
         # peak = 0  # Window from the start of the IR
-        dt = (max(t_IR) / len(t_IR))  # Time axis resolution
+        dt = max(t_IR) / len(t_IR)  # Time axis resolution
         tt_ms = round((ms / 1000) / dt)  # Number of samples equivalent to 64 ms
 
         # Windows
@@ -343,12 +388,14 @@ def SBIR(IR, t_IR, fmin, fmax, winCheck=False, spectraCheck=False, ms=32, method
 
         ms = 64
         # Sample of the initial peak
-        peak = detect_peaks(IR, mph=(max(IR) * 0.9), threshold=0, edge='rising', show=False)
+        peak = detect_peaks(
+            IR, mph=(max(IR) * 0.9), threshold=0, edge="rising", show=False
+        )
         if len(peak) > 1:
             peak = peak[0]
             # print('More than one peak at the IR')
         #        ind[x] = 0; # Window max from the beginning
-        dt = (max(t_IR) / len(t_IR))  # Time axis resolution
+        dt = max(t_IR) / len(t_IR)  # Time axis resolution
         tt_ms = round((ms / 1000) / dt)  # Number of samples equivalent to 64 ms
 
         # Windows
@@ -359,17 +406,20 @@ def SBIR(IR, t_IR, fmin, fmax, winCheck=False, spectraCheck=False, ms=32, method
         ##
         # Cosine window pre peak
         win_cos_b = win.cosine(2 * peak + 1)
-        pre_peak[0:int(peak)] = win_cos_b[0:int(peak)]
-        pre_peak[int(peak)::] = 1
+        pre_peak[0 : int(peak)] = win_cos_b[0 : int(peak)]
+        pre_peak[int(peak) : :] = 1
 
         # Cosine window post peak
-        post_peak[int(peak):int(peak + tt_ms)] = win_cos[int(tt_ms):int(2 * tt_ms)] / max(
-            win_cos[int(1 * tt_ms):int(2 * tt_ms)])  # Creating Hanning window array
+        post_peak[int(peak) : int(peak + tt_ms)] = win_cos[
+            int(tt_ms) : int(2 * tt_ms)
+        ] / max(
+            win_cos[int(1 * tt_ms) : int(2 * tt_ms)]
+        )  # Creating Hanning window array
 
         # Creating final window
-        window[0:int(peak)] = pre_peak[0:int(peak)]
+        window[0 : int(peak)] = pre_peak[0 : int(peak)]
         #         window[0:int(peak)] = 1  # 1 from the beggining
-        window[int(peak)::] = post_peak[int(peak)::]
+        window[int(peak) : :] = post_peak[int(peak) : :]
 
     # Applying window
     IR_array = np.zeros((len(IR), 2))  # Creating matrix
@@ -377,75 +427,112 @@ def SBIR(IR, t_IR, fmin, fmax, winCheck=False, spectraCheck=False, ms=32, method
     IR_array[:, 1] = IR[:] * window[:]  # FR and SBIR
 
     # Calculating FFT
-    FFT_array = np.zeros((len(IR_array[:, 0]), len(IR_array[0, :])), dtype='complex')  # Creating matrix
+    FFT_array = np.zeros(
+        (len(IR_array[:, 0]), len(IR_array[0, :])), dtype="complex"
+    )  # Creating matrix
 
     if ABEC is True:
-        FFT_array_dB = np.zeros((round(len(IR_array[:, 0]) / 2) - delta_ABEC, len(IR_array[0, :])), dtype='complex')
-        FFT_array_Pa = np.zeros((round(len(IR_array[:, 0]) / 2) - delta_ABEC, len(IR_array[0, :])), dtype='complex')
+        FFT_array_dB = np.zeros(
+            (round(len(IR_array[:, 0]) / 2) - delta_ABEC, len(IR_array[0, :])),
+            dtype="complex",
+        )
+        FFT_array_Pa = np.zeros(
+            (round(len(IR_array[:, 0]) / 2) - delta_ABEC, len(IR_array[0, :])),
+            dtype="complex",
+        )
     else:
-        FFT_array_dB = np.zeros((round(len(IR_array[:, 0]) / 2), len(IR_array[0, :])), dtype='complex')
-        FFT_array_Pa = np.zeros((round(len(IR_array[:, 0]) / 2), len(IR_array[0, :])), dtype='complex')
+        FFT_array_dB = np.zeros(
+            (round(len(IR_array[:, 0]) / 2), len(IR_array[0, :])), dtype="complex"
+        )
+        FFT_array_Pa = np.zeros(
+            (round(len(IR_array[:, 0]) / 2), len(IR_array[0, :])), dtype="complex"
+        )
 
     for i in range(0, len(IR_array[0, :])):
         iIR = IR_array[:, i]
         FFT_array[:, i] = 2 / len(iIR) * np.fft.fft(iIR)
         if ABEC is True:
-            FFT_array_Pa[:, i] = FFT_array[delta_ABEC:round(len(iIR) / 2), i]
+            FFT_array_Pa[:, i] = FFT_array[delta_ABEC : round(len(iIR) / 2), i]
         else:
-            FFT_array_Pa[:, i] = FFT_array[0:round(len(iIR) / 2), i]
+            FFT_array_Pa[:, i] = FFT_array[0 : round(len(iIR) / 2), i]
     for i in range(0, len(IR_array[0, :])):
         if ABEC is True:
-            FFT_array_dB[:, i] = 20 * np.log10(np.abs(FFT_array[delta_ABEC:int(len(FFT_array[:, i]) / 2),
-                                                      i]) / 2e-5)  # applying log and removing aliasing and first 20 Hz
+            FFT_array_dB[:, i] = 20 * np.log10(
+                np.abs(FFT_array[delta_ABEC : int(len(FFT_array[:, i]) / 2), i]) / 2e-5
+            )  # applying log and removing aliasing and first 20 Hz
         else:
             FFT_array_dB[:, i] = 20 * np.log10(
-                np.abs(FFT_array_Pa[:, i]) / 2e-5)  # applying log and removing aliasing and first 20 H
+                np.abs(FFT_array_Pa[:, i]) / 2e-5
+            )  # applying log and removing aliasing and first 20 H
 
     if ABEC is False:
-        freq_FFT = np.linspace(0, len(IR) / 2, num=int(len(IR) / 2))  # Frequency vector for the FFT
+        freq_FFT = np.linspace(
+            0, len(IR) / 2, num=int(len(IR) / 2)
+        )  # Frequency vector for the FFT
     else:
-        freq_FFT = np.linspace(fmin, fmax, num=len(FFT_array_dB[:, 0]))  # Frequency vector for the FFT
+        freq_FFT = np.linspace(
+            fmin, fmax, num=len(FFT_array_dB[:, 0])
+        )  # Frequency vector for the FFT
 
     # View windowed Impulse Response in time domain:
     if winCheck is True:
-        figWin = plt.figure(figsize=(12, 5), dpi=80, facecolor='w', edgecolor='k')
+        figWin = plt.figure(figsize=(12, 5), dpi=80, facecolor="w", edgecolor="k")
         win_index = 0
         plt.plot(t_IR, IR_array[:, win_index], linewidth=3)
-        plt.plot(t_IR, IR_array[:, win_index + 1], '--', linewidth=5)
-        plt.plot(t_IR, window[:] * (max(IR_array[:, 0])), '-.', linewidth=5)
-        plt.title('Impulse Response Windowing', fontsize=20)
-        plt.xlabel('Time [s]', fontsize=20)
-        plt.xlim([t_IR[0], 0.12])#t_IR[int(len(t_IR) / 8)]])
+        plt.plot(t_IR, IR_array[:, win_index + 1], "--", linewidth=5)
+        plt.plot(t_IR, window[:] * (max(IR_array[:, 0])), "-.", linewidth=5)
+        plt.title("Impulse Response Windowing", fontsize=20)
+        plt.xlabel("Time [s]", fontsize=20)
+        plt.xlim([t_IR[0], 0.12])  # t_IR[int(len(t_IR) / 8)]])
         # plt.xticks(np.arange(t_IR[int(peak[0])], t_IR[int(len(t_IR))], 0.032), fontsize=15)
-        plt.ylabel('Amplitude [-]', fontsize=20)
-        plt.legend(['Modal IR', 'SBIR IR', 'Window'], loc='best', fontsize=20)
-        plt.grid(True, 'both')
+        plt.ylabel("Amplitude [-]", fontsize=20)
+        plt.legend(["Modal IR", "SBIR IR", "Window"], loc="best", fontsize=20)
+        plt.grid(True, "both")
         plt.yticks(fontsize=15)
         plt.tight_layout()
         plt.show()
 
     # Frequency Response and SBIR
     if spectraCheck is True:
-        figSpectra = plt.figure(figsize=(12, 5), dpi=80, facecolor='w', edgecolor='k')
+        figSpectra = plt.figure(figsize=(12, 5), dpi=80, facecolor="w", edgecolor="k")
 
         if ABEC is False:
-            plt.semilogx(freq_FFT[fmin:fmax + 1], FFT_array_dB[fmin:fmax + 1, 0], linewidth=3, label='Full spectrum')
-            plt.semilogx(freq_FFT[fmin:fmax + 1], FFT_array_dB[fmin:fmax + 1, 1], '-.', linewidth=3, label='SBIR')
+            plt.semilogx(
+                freq_FFT[fmin : fmax + 1],
+                FFT_array_dB[fmin : fmax + 1, 0],
+                linewidth=3,
+                label="Full spectrum",
+            )
+            plt.semilogx(
+                freq_FFT[fmin : fmax + 1],
+                FFT_array_dB[fmin : fmax + 1, 1],
+                "-.",
+                linewidth=3,
+                label="SBIR",
+            )
         elif ABEC is True:
-            plt.semilogx(freq_FFT, FFT_array_dB[:, 0], linewidth=3, label='Full spectrum')
-            plt.semilogx(freq_FFT, FFT_array_dB[:, 1], '-.', linewidth=3, label='SBIR')
+            plt.semilogx(
+                freq_FFT, FFT_array_dB[:, 0], linewidth=3, label="Full spectrum"
+            )
+            plt.semilogx(freq_FFT, FFT_array_dB[:, 1], "-.", linewidth=3, label="SBIR")
 
         # plt.semilogx(freq_FFT[fmin:fmax + 1], 20 * np.log10(np.abs(FFT_array_Pa[fmin:fmax + 1, 1])/2e-5), ':',
         #              linewidth=3, label='SBIR 2')
-        plt.legend(fontsize=15, loc='best')  # , bbox_to_anchor=(0.003, 0.13))
+        plt.legend(fontsize=15, loc="best")  # , bbox_to_anchor=(0.003, 0.13))
         # plt.title('Processed IR vs ABEC', fontsize=20)
-        plt.xlabel('Frequency [Hz]', fontsize=20)
-        plt.ylabel('SPL [dB ref. 20 $\mu$Pa]', fontsize=20)
-        plt.gca().get_xaxis().set_major_formatter(ticker.ScalarFormatter())  # Remove scientific notation from xaxis
-        plt.gca().get_xaxis().set_minor_formatter(ticker.ScalarFormatter())  # Remove scientific notation from xaxis
-        plt.gca().tick_params(which='minor', length=5)  # Set major and minor ticks to same length
+        plt.xlabel("Frequency [Hz]", fontsize=20)
+        plt.ylabel("SPL [dB ref. 20 $\mu$Pa]", fontsize=20)
+        plt.gca().get_xaxis().set_major_formatter(
+            ticker.ScalarFormatter()
+        )  # Remove scientific notation from xaxis
+        plt.gca().get_xaxis().set_minor_formatter(
+            ticker.ScalarFormatter()
+        )  # Remove scientific notation from xaxis
+        plt.gca().tick_params(
+            which="minor", length=5
+        )  # Set major and minor ticks to same length
         plt.xticks(fontsize=15)
-        plt.grid(True, 'both')
+        plt.grid(True, "both")
         plt.xlim([fmin, fmax])
         plt.ylim([55, 105])
         plt.yticks(fontsize=15)
@@ -455,12 +542,10 @@ def SBIR(IR, t_IR, fmin, fmax, winCheck=False, spectraCheck=False, ms=32, method
     # return freq_FFT[closest_node(freq_FFT,fmin):closest_node(freq_FFT,fmax)+1], FFT_array_Pa[closest_node(freq_FFT,fmin):closest_node(freq_FFT,fmax)+1,1], window
 
 
-
 class IR(object):
     """Perform a room impulse response computation."""
 
-    def __init__(self, sampling_rate, duration,
-            minimum_frequency, maximum_frequency):
+    def __init__(self, sampling_rate, duration, minimum_frequency, maximum_frequency):
         """
         Setup the room impulse computation.
 
@@ -479,16 +564,20 @@ class IR(object):
         self._number_of_frequencies = int(round(sampling_rate * duration))
         self._sampling_rate = sampling_rate
         self._duration = duration
-        self._frequencies = (sampling_rate * np.arange(self._number_of_frequencies) 
-                / self._number_of_frequencies)
+        self._frequencies = (
+            sampling_rate
+            * np.arange(self._number_of_frequencies)
+            / self._number_of_frequencies
+        )
         self._timesteps = np.arange(self._number_of_frequencies) / sampling_rate
 
         self._maximum_frequency = maximum_frequency
         self._minimum_frequency = minimum_frequency
 
         self._frequency_filter_indices = np.flatnonzero(
-                (self._frequencies <= self._maximum_frequency) & 
-                (self._frequencies >= self._minimum_frequency))
+            (self._frequencies <= self._maximum_frequency)
+            & (self._frequencies >= self._minimum_frequency)
+        )
 
         self._high_pass_frequency = 2 * minimum_frequency
         self._low_pass_frequency = 2 * maximum_frequency
@@ -498,7 +587,6 @@ class IR(object):
 
         self._alpha = 0.18  # Tukey window alpha
 
-        
     @property
     def number_of_frequencies(self):
         """Return number of frequencies."""
@@ -527,9 +615,7 @@ class IR(object):
     @property
     def filtered_frequencies(self):
         """Return the filtered frequencies."""
-        return self.frequencies[
-                self._frequency_filter_indices
-                ]
+        return self.frequencies[self._frequency_filter_indices]
 
     @property
     def maximum_frequency(self):
@@ -581,9 +667,7 @@ class IR(object):
         """Set low pass filter order."""
         self._low_pass_order = order
 
-
-    def compute_room_impulse_response(
-            self, values_at_filtered_frequencies):
+    def compute_room_impulse_response(self, values_at_filtered_frequencies):
         """
         Compute the room impulse response.
 
@@ -596,44 +680,50 @@ class IR(object):
         Output
         ------
         An array of approximate time values at the given time steps.
-        
+
         """
         from scipy.signal import butter, freqz, tukey
         from scipy.fftpack import ifft
-        
+
         b_high, a_high = butter(
-                self.high_pass_filter_order,
-                self.high_pass_frequency * 2 / self.sampling_rate, 
-                'high')
+            self.high_pass_filter_order,
+            self.high_pass_frequency * 2 / self.sampling_rate,
+            "high",
+        )
 
         b_low, a_low = butter(
-                self.low_pass_filter_order,
-                self.low_pass_frequency * 2 / self.sampling_rate, 
-                'low')
+            self.low_pass_filter_order,
+            self.low_pass_frequency * 2 / self.sampling_rate,
+            "low",
+        )
 
         high_pass_values = freqz(
-                b_high, a_high, self.filtered_frequencies,
-                fs=self.sampling_rate)[1]
+            b_high, a_high, self.filtered_frequencies, fs=self.sampling_rate
+        )[1]
 
         low_pass_values = freqz(
-                b_low, a_low, self.filtered_frequencies,
-                fs=self.sampling_rate)[1]
+            b_low, a_low, self.filtered_frequencies, fs=self.sampling_rate
+        )[1]
 
-        butter_filtered_values = (values_at_filtered_frequencies * 
-                np.conj(low_pass_values) * np.conj(high_pass_values))
+        butter_filtered_values = (
+            values_at_filtered_frequencies
+            * np.conj(low_pass_values)
+            * np.conj(high_pass_values)
+        )
 
         # windowed_values = butter_filtered_values * tukey(len(self.filtered_frequencies),
         #         min([self.maximum_frequency - self.low_pass_frequency,
         #              self.high_pass_frequency - self.minimum_frequency]) /
         #         (self.maximum_frequency - self.minimum_frequency))
 
-        windowed_values = butter_filtered_values * tukey(len(self.filtered_frequencies), alpha=self._alpha)
+        windowed_values = butter_filtered_values * tukey(
+            len(self.filtered_frequencies), alpha=self._alpha
+        )
 
-        full_frequency_values = np.zeros(self.number_of_frequencies, dtype='complex128')
+        full_frequency_values = np.zeros(self.number_of_frequencies, dtype="complex128")
         full_frequency_values[self._frequency_filter_indices] = windowed_values
-        full_frequency_values[-self._frequency_filter_indices] = np.conj(windowed_values)
+        full_frequency_values[-self._frequency_filter_indices] = np.conj(
+            windowed_values
+        )
 
         return ifft((full_frequency_values)) * self.number_of_frequencies
-    
-
-
