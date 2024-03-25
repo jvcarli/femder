@@ -1,0 +1,18 @@
+# In case people don't have core.autocrlf set
+# git will normalize the files that it decides
+# that have text content.
+# Normalization imply that line endings are converted to LF when
+# they are checked into the repository.
+* text=auto
+
+# Explicitly declare text files we want to always be normalized and converted
+# to LF line endings on checkout.
+*.ipynb text
+*.py text
+*.rst text
+*.toml text
+.editorconfig text
+LICENSE text
+
+# Ensure Windows batch files are CRLF
+*.bat text eol=crlf
