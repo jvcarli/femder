@@ -1,0 +1,2 @@
+# Python packages required for building femder documentation
+sphinx

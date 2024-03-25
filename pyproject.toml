@@ -4,6 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "femder"
+dynamic = ["dependencies", "optional-dependencies"]
 version = "0.0.1"
 authors = [
   { name="Luiz Augusto Alvim", email="luiz.alvim@eac.ufsm.br" },
@@ -11,25 +12,6 @@ authors = [
 description = "A simple acoustic FEM package"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = [
-  "cloudpickle",
-  "gmsh",
-  "ipython",
-  "matplotlib",
-  "meshio",
-  "mkl",
-  "numba",
-  "numpy",
-  "plotly",
-  "psutil",
-  "pyMKL @ git+https://github.com/rinaldipp/pyMKL",
-  "pymoo",
-  "pytta",
-  "scipy",
-  "seaborn",
-  "tmm @ git+https://github.com/rinaldipp/tmm",
-  "tqdm",
-]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -39,3 +21,14 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/gutoalvim/femder"
 "Bug Tracker" = "https://github.com/gutoalvim/femder/issues"
+
+[tool.setuptools.dynamic]
+dependencies = { file = [ "requirements/runtime_requirements.txt"] }
+optional-dependencies.doc = { file = ["requirements/doc_requirements.txt"] }
+optional-dependencies.lint = { file = ["requirements/lint_requirements.txt"] }
+
+[tool.setuptools.dynamic.optional-dependencies.dev]
+file = [
+    "requirements/doc_requirements.txt",
+    "requirements/lint_requirements.txt"
+]

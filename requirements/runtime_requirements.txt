@@ -1,0 +1,18 @@
+# Python packages required for running femder package
+cloudpickle
+gmsh
+ipython
+matplotlib
+meshio
+mkl
+numba
+numpy
+plotly
+psutil
+pyMKL @ git+https://github.com/rinaldipp/pyMKL
+pymoo
+pytta
+scipy
+seaborn
+tmm @ git+https://github.com/rinaldipp/tmm
+tqdm
