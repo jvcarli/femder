@@ -1,0 +1,16 @@
+# Ignore revisions listed in this file.
+#
+# You can configure git to automatically use this file with the following config:
+#
+# - Locally (for this repository):
+# $ git config blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# - Globally (for all repositories that contain a .git-blame-ignore-revs file):
+# $ git config --global blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# - Directly under git cli:
+# $ git blame <anyfile> --ignore-revs-file .git-blame-ignore-revs
+
+# run ruff (https://github.com/astral-sh/ruff) formatter
+# for the first time
+32179f057d7ada723afb32fea301c0e202cf30e7
