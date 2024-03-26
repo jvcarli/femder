@@ -14,32 +14,12 @@ Installation
 
   - Git
   - Python >= 3.8
-  - Conda package manager (You can get it by downloading Miniconda 3 at https://docs.conda.io/projects/miniconda/en/latest/)
 
-1. In **Anaconda Prompt** create and activate a new env:
+Install ``femder`` package using ``pip``:
 
-   .. code::
+.. code::
 
-      $ conda create -n myenv python=3.8
-      $ conda activate myenv
-
-2. Install non-python dependencies:
-
-   .. code::
-
-      $ conda install -c plotly plotly-orca
-
-3. Install femder:
-
-   .. code::
-
-      $ pip install git+https://github.com/jvcarli/femder.git
-
-4. Install your IDE of choice, Jupyter Notebook is great to run this package and do your work in an organized fashion. You can install it using:
-
-   .. code::
-
-      $ pip install notebook
+   $ pip install git+https://github.com/jvcarli/femder.git
 
 Running the examples
 --------------------
@@ -49,7 +29,7 @@ you can install them using:
 
 .. code::
 
-    $ pip install kaleido more-itertools geneticalgorithm
+    $ pip install more-itertools geneticalgorithm
 
 ----------
 

@@ -2,6 +2,7 @@
 cloudpickle
 gmsh
 ipython
+kaleido
 matplotlib
 meshio
 mkl
