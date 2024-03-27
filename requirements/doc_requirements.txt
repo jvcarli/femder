@@ -1,2 +1,3 @@
 # Python packages required for building femder documentation
+pydata-sphinx-theme
 sphinx
