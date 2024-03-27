@@ -21,15 +21,12 @@ Install ``femder`` package using ``pip``:
 
    $ pip install git+https://github.com/jvcarli/femder.git
 
-Running the examples
---------------------
+Examples
+--------
 
-For running some examples under ``examples`` directory some additional packages are required,
-you can install them using:
-
-.. code::
-
-    $ pip install more-itertools geneticalgorithm
+For instructions on running the examples,
+please refer to the `README <https://github.com/jvcarli/femder/tree/main/examples>`_
+file located in the ``examples`` directory.
 
 ----------
 
