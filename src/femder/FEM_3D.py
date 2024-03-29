@@ -3929,38 +3929,3 @@ class FEM3D:
         cloudpickle.dump(simulation_data, outfile)
         outfile.close()
         print("FEM saved successfully.")
-
-
-if __name__ == "__main__":
-    import femder as fd
-
-    path_to_geo = (
-        r"C:\Users\gutoa\Documents\SkaterXL\UFSM\MNAV\Code Testing\CR2_modificado.geo"
-    )
-    AP = fd.AirProperties(c0=343)
-    fmax = 20
-    AC = fd.AlgControls(AP, 20, fmax, 10)
-
-    S = fd.Source("spherical")
-
-    S.coord = np.array([[3, 2.25, 1.2]])
-    S.q = np.array([[0.0001]])
-
-    R = fd.Receiver()
-    R.star([0, 2.026, 1.230], 0.1)
-    # R.coord = np.array([2,6,1.2])
-
-    BC = fd.BC(AC, AP)
-    BC.normalized_admittance([1, 2, 3, 4, 5], 0.02)
-    grid = fd.GridImport3D(
-        AP,
-        path_to_geo,
-        S=None,
-        R=None,
-        fmax=fmax,
-        num_freq=6,
-        scale=1,
-        order=1,
-        heal_shapes=False,
-    )
-    obj = fd.FEM3D(grid, S, R, AP, AC, BC)
