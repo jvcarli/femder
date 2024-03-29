@@ -5,6 +5,9 @@ Created on Fri Jan 15 13:57:06 2021
 @author: gutoa
 """
 
+from . import utils
+from . import conversions
+
 import numpy as np
 import numba
 
@@ -28,9 +31,6 @@ warnings.filterwarnings("ignore")
 
 from contextlib import contextmanager
 import sys, os
-
-import femder as fd
-
 
 @contextmanager
 def suppress_stdout():
@@ -126,11 +126,11 @@ def SBIR_SPL(complex_pressure, AC, fmin, fmax):
 
     ir_duration = 1 / df
 
-    ir = fd.IR(fs, ir_duration, fmin, fmax).compute_room_impulse_response(
+    ir = utils.IR(fs, ir_duration, fmin, fmax).compute_room_impulse_response(
         complex_pressure.ravel()
     )
     t_ir = np.linspace(0, ir_duration, len(ir))
-    sbir = fd.SBIR(ir, t_ir, AC.freq[0], AC.freq[-1], method="peak")
+    sbir = utils.SBIR(ir, t_ir, AC.freq[0], AC.freq[-1], method="peak")
     sbir_freq = sbir[1]
     sbir_SPL = p2SPL(sbir_freq)[fmin_indx:fmax_indx]
     sbir_freq = np.linspace(fmin, fmax, len(sbir_SPL))
@@ -994,7 +994,7 @@ class BEM3D:
                 ax.set_thetamin(np.amin(np.rad2deg(R.theta)))
                 ax.set_thetamax(np.amax(np.rad2deg(R.theta)))
 
-                ax.plot(R.theta, fd.p2SPL(self.pS[i, :]))
+                ax.plot(R.theta, np.real(conversions.p2SPL(self.pS[i, :])))
         return self.pT, self.pS
 
     def evaluate_physical_group(self, domain_index, average=True, plot=False):
