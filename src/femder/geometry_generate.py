@@ -5,9 +5,13 @@ Created on Thu Dec 24 12:55:23 2020
 @author: gutoa
 """
 
+from . import grid_importing
+from . import controlsair
+from . import boundary_conditions
+from . import fem_3d
+
 import gmsh
 import numpy as np
-import femder as fd
 import sys
 import os
 
@@ -153,7 +157,7 @@ class GeometryGenerator:
         gmsh.clear()
 
         # gmsh.write('current_geo2.geo_unrolled')
-        Grid = fd.GridImport3D(
+        Grid = grid_importing.GridImport3D(
             self.AP,
             "current_mesh.brep",
             S=self.S_,
@@ -404,7 +408,7 @@ class GeometryGenerator:
         #
         #
         # # gmsh.write('current_geo2.geo_unrolled')
-        # Grid = fd.GridImport3D(self.AP, 'current_mesh.msh',S=self.S_,R=self.R_,fmax=self.fmax,num_freq=self.num_freq,order = self.order,scale=self.S_cale,plot=True)
+        # Grid = grid_importing.GridImport3D(self.AP, 'current_mesh.msh',S=self.S_,R=self.R_,fmax=self.fmax,num_freq=self.num_freq,order = self.order,scale=self.S_cale,plot=True)
         # self.nos = Grid.nos
         # self.elem_surf = Grid.elem_surf
         # self.elem_vol =  Grid.elem_vol
@@ -600,19 +604,17 @@ def extract_mesh_data_from_gmsh(dim, order, mesh_data):
 
 
 if __name__ == "__main__":
-    import femder as fd
     import numpy as np
     import sys
     import matplotlib.pyplot as plt
-    import femder as fd
     import time
 
     then = time.time()
     from pymoo.problems.functional import FunctionalProblem
 
-    AP = fd.AirProperties()
-    AC = fd.AlgControls(AP, 20, 150, 1)
-    BC = fd.BC(AC, AP)
+    AP = controlsair.AirProperties()
+    AC = controlsair.AlgControls(AP, 20, 150, 1)
+    BC = boundary_conditions.BC(AC, AP)
     BC.normalized_admittance(2, 0.02)
 
     def optim_fun(X):
@@ -629,13 +631,13 @@ if __name__ == "__main__":
             )  # Montando os vértices da geometria com varíaveis da função
             height = X[5]
             angle = X[6]
-            grid = fd.GeometryGenerator(
+            grid = GeometryGenerator(
                 AP, fmax=150, num_freq=7, plot=False
             )  # Gera objeto da geometria
             # # grid.generate_symmetric_polygon(pts, height) #Criando geometria a partir dos vétrices.
             grid.generate_symmetric_polygon_variheight(pts, height, angle)
 
-            obj = fd.FEM3D(
+            obj = fem_3d.FEM3D(
                 grid, S=None, R=None, AP=AP, AC=AC, BC=BC
             )  # Cria objeto de simulação
 
@@ -704,11 +706,11 @@ if __name__ == "__main__":
         )  # Montando os vértices da geometria com varíaveis da função
         height = X[5]
         angle = X[6]
-        # grid = fd.GeometryGenerator(AP, fmax=150, num_freq=12, plot=False)  # Gera objeto da geometria
+        # grid = GeometryGenerator(AP, fmax=150, num_freq=12, plot=False)  # Gera objeto da geometria
         # # # grid.generate_symmetric_polygon(pts, height) #Criando geometria a partir dos vétrices.
         # grid.generate_symmetric_polygon_variheight(pts, height, angle)
 
-        obj = fd.FEM3D(
+        obj = fem_3d.FEM3D(
             None, S=None, R=None, AP=AP, AC=AC, BC=BC
         )  # Cria objeto de simulação
         # obj.plot_problem()
