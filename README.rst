@@ -1,11 +1,12 @@
 femder
 ======
 
-A Finite Element Method (FEM) code for acoustics written for my undergraduate class "Métodos Numéricos em Acústica e Vibrações", lectured by Dr. Paulo Mareze.
+A Finite Element Method (FEM) code for acoustics written for the undergraduate course
+"Métodos Numéricos em Acústica e Vibrações", taught by Dr. Paulo Mareze.
 
-Author: Luiz Augusto T. Ferraz Alvim
+**Author**: Luiz Augusto T. Ferraz Alvim
 
-Co-Author: Dr. Paulo Mareze
+**Co-Author**: Dr. Paulo Mareze
 
 Installation
 ------------
