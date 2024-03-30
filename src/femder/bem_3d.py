@@ -6,7 +6,6 @@ Created on Fri Jan 15 13:57:06 2021
 """
 
 from . import utils
-from . import conversions
 
 import numpy as np
 import numba
@@ -994,7 +993,7 @@ class BEM3D:
                 ax.set_thetamin(np.amin(np.rad2deg(R.theta)))
                 ax.set_thetamax(np.amax(np.rad2deg(R.theta)))
 
-                ax.plot(R.theta, np.real(conversions.p2SPL(self.pS[i, :])))
+                ax.plot(R.theta, np.real(p2SPL(self.pS[i, :])))
         return self.pT, self.pS
 
     def evaluate_physical_group(self, domain_index, average=True, plot=False):

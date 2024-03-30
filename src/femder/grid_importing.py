@@ -406,31 +406,3 @@ class GridImport3D:
         gmsh.model.mesh.setOrder(self.order)
         gmsh.fltk.run()
         gmsh.finalize()
-
-
-if __name__ == "__main__":
-    import femder as fd
-
-    path_to_geo = r"C:\Users\gutoa\Documents\Room Acoustics\Cipriano_Rina_Gargel\Room Study\Rinaldi_Study\Geom\room_mesh_MG_treatments - Copy.geo"
-    AP = fd.AirProperties(c0=343)
-    AC = fd.AlgControls(AP, 20, 200, 1)
-
-    # S = fd.Source("spherical")
-    # S.coord = np.array([[1.53/2,2.7+1.32,1.14],[-1.53/2,2.7+1.32,1.14]])
-    # S.q = np.array([[0.0001],[0.0001]])
-
-    # R = fd.Receiver()
-    # R.star([0,2.7,1.14],0.15)
-    grid = fd.GridImport3D(
-        AP,
-        path_to_geo,
-        S=None,
-        R=None,
-        fmax=200,
-        num_freq=6,
-        scale=1,
-        order=1,
-        load_method="other",
-        heal_shapes=False,
-    )
-    # grid.plot_mesh(True)

@@ -3,7 +3,7 @@ import numpy as np
 # import toml
 import matplotlib.pyplot as plt
 import time, sys
-from femder import utils
+from . import utils
 
 
 class AirProperties:

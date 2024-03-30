@@ -1,9 +1,9 @@
 import numpy as np
 
 # import toml
-from femder.controlsair import load_cfg
-from femder.controlsair import sph2cart, cart2sph
-from femder.rayinidir import RayInitialDirections
+from .controlsair import load_cfg
+from .controlsair import sph2cart, cart2sph
+from .rayinidir import RayInitialDirections
 #
 
 
