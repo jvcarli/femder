@@ -5,7 +5,12 @@ Created on Sat Dec 26 12:19:55 2020
 @author: gutoa
 """
 
-import femder as fd
+from . import receivers
+from . import sources
+from . import utils
+# from .fem_3d import p2SPL
+from .conversions import p2SPL
+
 import numpy as np
 
 
@@ -26,9 +31,9 @@ def r_s_coord_pair(y_value, distance_s_r):
 
     s_coord = np.array([[s_x, s_y, 1.2], [-s_x, s_y, 1.2]])
 
-    R = fd.Receiver()
+    R = receivers.Receiver()
     R.star(r_coord, 0.15)
-    S = fd.Source()
+    S = sources.Source()
     S.coord = s_coord
     S.q = np.array([[0.0001], [0.0001]])
 
@@ -86,9 +91,9 @@ def r_s_positions(grid, grid_pts, bias):
     Ro = []
     So = []
     for i in range(len(r_coords)):
-        R = fd.Receiver(coord=[r_coords[i]])
+        R = receivers.Receiver(coord=[r_coords[i]])
         Ro.append(R)
-        S = fd.Source()
+        S = sources.Source()
         S.coord = np.array([[s_coords_L[i, :]], [s_coords_R[i, :]]])
         S.q = np.array([[0.0001], [0.0001]])
         So.append(S)
@@ -155,18 +160,18 @@ def r_s_from_grid(
     So = []
     if star_average:
         for i in range(len(r_coords)):
-            R = fd.Receiver()
+            R = receivers.Receiver()
             R.star(r_coords[i], 0.15)
             Ro.append(R)
-            S = fd.Source()
+            S = sources.Source()
             S.coord = np.array([[s_coords_L[i, :]], [s_coords_R[i, :]]])
             S.q = np.array([[0.0001], [0.0001]])
             So.append(S)
     else:
         for i in range(len(r_coords)):
-            R = fd.Receiver(coord=[r_coords[i]])
+            R = receivers.Receiver(coord=[r_coords[i]])
             Ro.append(R)
-            S = fd.Source()
+            S = sources.Source()
             S.coord = np.array([[s_coords_L[i, :]], [s_coords_R[i, :]]])
             S.q = np.array([[0.0001], [0.0001]])
             So.append(S)
@@ -186,14 +191,14 @@ def fitness_metric(complex_pressure, AC, fmin, fmax):
 
     ir_duration = 1 / df
 
-    ir = fd.IR(fs, ir_duration, fmin, fmax).compute_room_impulse_response(
+    ir = utils.IR(fs, ir_duration, fmin, fmax).compute_room_impulse_response(
         complex_pressure.ravel()
     )
     t_ir = np.linspace(0, ir_duration, len(ir))
-    sbir = fd.SBIR(ir, t_ir, AC.freq[0], AC.freq[-1], method="peak")
+    sbir = utils.SBIR(ir, t_ir, AC.freq[0], AC.freq[-1], method="peak")
     sbir_freq = sbir[1]
-    sbir_SPL = fd.p2SPL(sbir_freq)[fmin_indx:fmax_indx]
-    modal_SPL = fd.p2SPL(complex_pressure.ravel()).ravel()[fmin_indx:fmax_indx]
+    sbir_SPL = np.real(p2SPL(sbir_freq))[fmin_indx:fmax_indx]
+    modal_SPL = np.real(p2SPL(complex_pressure.ravel()).ravel())[fmin_indx:fmax_indx]
 
     std_sbir = w_sbir * np.std(sbir_SPL)
     std_modal = w_modal * np.std(modal_SPL)
