@@ -9,7 +9,7 @@ from . import receivers
 from . import sources
 from . import utils
 # from .fem_3d import p2SPL
-from .conversions import p2SPL
+from ._conversions import p2SPL
 
 import numpy as np
 
