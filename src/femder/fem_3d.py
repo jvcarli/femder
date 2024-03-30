@@ -4,6 +4,14 @@ Created on Sat Nov 28 23:33:54 2020
 
 @author: Luiz Augusto Alvim & Paulo Mareze
 """
+from .utils import detect_peaks
+from . import utils
+from . import plot_tools
+from . import geometry_generate
+from . import sources
+from . import receivers
+from . import optimization_helpers
+from . import fem_numerical
 
 import numpy as np
 from scipy.sparse.linalg import spsolve
@@ -25,7 +33,6 @@ from numba import njit
 import numba
 from scipy.sparse import coo_matrix
 from scipy.sparse import csc_matrix
-from femder.utils import detect_peaks
 import matplotlib.pyplot as plt
 
 warnings.filterwarnings("ignore")
@@ -35,7 +42,6 @@ from contextlib import contextmanager
 import sys, os
 
 os.environ["KMP_WARNINGS"] = "0"
-import femder as fd
 
 
 @contextmanager
@@ -154,11 +160,11 @@ def SBIR_SPL(complex_pressure, rC, AC, fmin, fmax):
     df = AC.freq[1] - AC.freq[0]
     ir_duration = 1 / df
     for i in range(len(rC)):
-        ir = fd.IR(fs, ir_duration, fmin, fmax).compute_room_impulse_response(
+        ir = utils.IR(fs, ir_duration, fmin, fmax).compute_room_impulse_response(
             complex_pressure[:, i].ravel()
         )
         t_ir = np.linspace(0, ir_duration, len(ir))
-        sbir = fd.SBIR(ir, t_ir, fmin, fmax, winCheck=False, method="constant")
+        sbir = utils.SBIR(ir, t_ir, fmin, fmax, winCheck=False, method="constant")
         sbir_spl = sbir[1][:, 1]
         sbir_SPL = np.real(p2SPL(sbir_spl))
         sbirspl.append(
@@ -177,7 +183,7 @@ def IR(complex_pressure, AC, fmin, fmax):
 
     ir_duration = 1 / df
 
-    ir = fd.IR(fs, ir_duration, fmin, fmax).compute_room_impulse_response(
+    ir = utils.IR(fs, ir_duration, fmin, fmax).compute_room_impulse_response(
         complex_pressure.ravel()
     )
     t_ir = np.linspace(0, ir_duration, len(ir))
@@ -1364,7 +1370,7 @@ class FEM3D:
 
     @property
     def spl(self):
-        return fd.p2SPL(self.pR)
+        return p2SPL(self.pR)
 
     @property
     def avg_spl(self):
@@ -1372,7 +1378,7 @@ class FEM3D:
 
     @property
     def spl_S(self):
-        return fd.p2SPL(self.pR.T / (1j * self.w * self.rho0)).T
+        return p2SPL(self.pR.T / (1j * self.w * self.rho0)).T
 
     @property
     def avg_spl_S(self):
@@ -1417,11 +1423,11 @@ class FEM3D:
                     fluid_c = {1: np.ones((len(self.elem_vol),)) * self.c0}
                     fluid_rho = {1: np.ones((len(self.elem_vol),)) * self.rho0}
                     det_ja, arg_stiff = (
-                        fd.fem_numerical.pre_compute_volume_assemble_vars(
+                        fem_numerical.pre_compute_volume_assemble_vars(
                             self.elem_vol, self.nos, 1
                         )
                     )
-                    self.H, self.Q = fd.fem_numerical.assemble_volume_matrices(
+                    self.H, self.Q = fem_numerical.assemble_volume_matrices(
                         self.elem_vol,
                         self.nos,
                         fluid_c,
@@ -1845,11 +1851,11 @@ class FEM3D:
         """
         print("Initializing optimization")
         then = time.time()
-        _Grid = fd.GeometryGenerator(self.AP, np.amax(self.freq), num_freq)
+        _Grid = geometry_generate.GeometryGenerator(self.AP, np.amax(self.freq), num_freq)
         _Grid.generate_symmetric_polygon_variheight(
             geometry_points, geometry_height, geometry_angle
         )
-        sC, rC = fd.r_s_from_grid(
+        sC, rC = optimization_helpers.r_s_from_grid(
             _Grid,
             num_grid_pts,
             star_average=star_average,
@@ -1871,9 +1877,9 @@ class FEM3D:
 
         self.H = None
         self.Q = None
-        self.R = fd.Receiver()
+        self.R = receivers.Receiver()
         self.R.coord = R_all
-        self.S = fd.Source()
+        self.S = sources.Source()
         self.S.coord = S_all
         self.Scand = self.S
         self.Rcand = self.R
@@ -1884,9 +1890,9 @@ class FEM3D:
             )
         fom = []
 
-        # Grid = fd.GeometryGenerator(self.AP,np.amax(self.freq),num_freq).generate_symmetric_polygon_variheight(geometry_points,geometry_height,geometry_angle)
-        # Grid = fd.GridImport3D(self.AP, self.path_to_geo_unrolled, S=self.S, R=self.R, fmax = self.grid.fmax, num_freq = self.grid.num_freq, order=self.order, plot=True)
-        Grid = fd.GeometryGenerator(self.AP, np.amax(self.freq), num_freq)
+        # Grid = grid_importing.GeometryGenerator(self.AP,np.amax(self.freq),num_freq).generate_symmetric_polygon_variheight(geometry_points,geometry_height,geometry_angle)
+        # Grid = grid_importing.GridImport3D(self.AP, self.path_to_geo_unrolled, S=self.S, R=self.R, fmax = self.grid.fmax, num_freq = self.grid.num_freq, order=self.order, plot=True)
+        Grid = geometry_generate.GeometryGenerator(self.AP, np.amax(self.freq), num_freq)
         Grid.generate_symmetric_polygon_variheight(
             geometry_points, geometry_height, geometry_angle
         )
@@ -2747,7 +2753,7 @@ class FEM3D:
             )
 
         if only_mesh is True:
-            fig = fd.plot_tools.remove_bg_and_axis(fig, 1)
+            fig = plot_tools.remove_bg_and_axis(fig, 1)
             fig.update_layout(showlegend=False)
 
         if saveFig:
@@ -3838,7 +3844,7 @@ class FEM3D:
             else:
                 labels = [f"r_{i}" for i in range(len(y_list))]
 
-        fig = fd.plot_tools.freq_response_plotly(
+        fig = plot_tools.freq_response_plotly(
             len(y_list) * [self.freq],
             y_list,
             labels=labels,

@@ -1,6 +1,6 @@
 import numpy as np
-from femder.controlsair import sph2cart, cart2sph
-from femder.rayinidir import RayInitialDirections
+from .controlsair import sph2cart, cart2sph
+from .rayinidir import RayInitialDirections
 
 
 class Source:
