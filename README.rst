@@ -14,7 +14,7 @@ Installation
 - Prerequisites:
 
   - Git
-  - Python >= 3.8
+  - Python >= 3.9, < 3.12
 
 Install ``femder`` package using ``pip``:
 

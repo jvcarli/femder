@@ -6,7 +6,7 @@ kaleido
 matplotlib
 meshio
 mkl
-numba
+numba < 0.59
 numpy
 plotly
 psutil
