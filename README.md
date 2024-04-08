@@ -1,5 +1,4 @@
-femder
-======
+# femder
 
 A Finite Element Method (FEM) code for acoustics written for the undergraduate course
 "Métodos Numéricos em Acústica e Vibrações", taught by Dr. Paulo Mareze.
@@ -8,26 +7,24 @@ A Finite Element Method (FEM) code for acoustics written for the undergraduate c
 
 **Co-Author**: Dr. Paulo Mareze
 
-Installation
-------------
+## Installation
 
 - Prerequisites:
 
   - Git
   - Python >= 3.9, < 3.12
 
-Install ``femder`` package using ``pip``:
+Install `femder` package using `pip`:
 
-.. code::
+```
+$ pip install git+https://github.com/jvcarli/femder.git
+```
 
-   $ pip install git+https://github.com/jvcarli/femder.git
-
-Examples
---------
+## Examples
 
 For instructions on running the examples,
-please refer to the `README <https://github.com/jvcarli/femder/tree/main/examples>`_
-file located in the ``examples`` directory.
+please refer to the [README](./examples/README.md)
+file located in the `examples` directory.
 
 ----------
 
