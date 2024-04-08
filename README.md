@@ -28,8 +28,6 @@ file located in the `examples` directory.
 
 ----------
 
-Have fun doing acoustics, if you have any thoughts, issues, suggestions, let me know here on Git or send me an email (luiz.alvim@eac.ufsm.br)
+Have fun doing acoustics, if you have any thoughts, issues, suggestions, please open an issue.
 
-Special thanks to my teacher Dr. Paulo Mareze, Dr. Eric Brandao and my friend Alexandre Piccini for guiding me to the FEM mountains.
-
-I would also like to thank my great friend Rinaldi Petrolli.
+Special thanks to Dr. Paulo Mareze, Dr. Eric Brandao, Alexandre Piccini and Rinaldi Petrolli.
