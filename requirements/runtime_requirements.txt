@@ -8,7 +8,7 @@ meshio
 mkl
 numba < 0.59
 numpy
-plotly
+plotly >= 4.9
 psutil
 pyMKL @ git+https://github.com/rinaldipp/pyMKL
 pymoo
