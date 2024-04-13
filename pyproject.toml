@@ -4,8 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "femder"
-dynamic = ["dependencies", "optional-dependencies"]
-version = "0.0.1"
+dynamic = ["dependencies", "optional-dependencies", "version"]
 authors = [
   { name="Luiz Augusto Alvim", email="luiz.alvim@eac.ufsm.br" },
 ]
@@ -23,6 +22,7 @@ classifiers = [
 "Bug Tracker" = "https://github.com/gutoalvim/femder/issues"
 
 [tool.setuptools.dynamic]
+version = {attr = "femder.__version__"}
 dependencies = { file = [ "requirements/runtime_requirements.txt"] }
 optional-dependencies.dev_doc = { file = ["requirements/dev_doc_requirements.txt"] }
 optional-dependencies.doc = { file = ["requirements/doc_requirements.txt"] }

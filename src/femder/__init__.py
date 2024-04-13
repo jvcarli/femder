@@ -28,3 +28,6 @@ from femder import plot_tools
 from femder import fem_numerical
 
 plot_tools.set_plotly_renderer()
+
+
+__version__ = "0.1.0"
