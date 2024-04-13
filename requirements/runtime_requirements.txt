@@ -10,10 +10,10 @@ numba < 0.59
 numpy
 plotly >= 4.9
 psutil
-pyMKL @ git+https://github.com/rinaldipp/pyMKL
+pyMKL @ git+https://github.com/jvcarli/pyMKL
 pymoo
 pytta
 scipy
 seaborn
-tmm @ git+https://github.com/rinaldipp/tmm
+tmm @ git+https://github.com/jvcarli/tmm
 tqdm
