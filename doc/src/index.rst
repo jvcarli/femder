@@ -11,4 +11,5 @@ A Finite Element Method (FEM) code for acoustics written for the undergraduate c
    :maxdepth: 1
    :caption: Contents:
 
-   ./reference/index.rst
+   tutorials/index.rst
+   reference/index.rst
