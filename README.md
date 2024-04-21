@@ -16,8 +16,9 @@ Prerequisites:
 - Git
 - Python >= 3.9, < 3.12
 
-**NOTE**: If you're a beginner at programming we strongly recommend you to
-use [Anaconda Distribution](https://www.anaconda.com/download) - it includes
+**NOTE**: If you're a beginner at programming we strongly recommend that
+you follow the conda installation guide below and download
+[Anaconda Distribution](https://www.anaconda.com/download) - it includes
 Python, [NumPy](https://github.com/numpy/numpy),
 and many other commonly used packages for scientific computing and data science.
 It also includes [conda](https://docs.conda.io/en/latest/),
