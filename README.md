@@ -1,3 +1,6 @@
+![Static Badge](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue)
+![Static Badge](https://img.shields.io/badge/version-v0.1.0-orange?logo=github)
+
 # femder
 
 A Finite Element Method (FEM) code for acoustics written for the undergraduate course
