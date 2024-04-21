@@ -25,7 +25,7 @@ that makes it easier to install and manage other packages you may need, like `gi
 
 <details>
 
-<summary>For <a href="https://docs.conda.io"><code>conda</code></a> - a package manager that comes with <a href="https://www.anaconda.com/download">Anaconda Distribution</a>, <a href="https://docs.anaconda.com/free/miniconda/">Miniconda</a> and <a href="https://github.com/conda-forge/miniforge">Miniforge</a> (<em>click arrow to expand</em>):</summary>
+<summary>For <a href="https://docs.conda.io"><code>conda</code></a> - a package manager that comes with <a href="https://www.anaconda.com/download">Anaconda Distribution</a>, <a href="https://docs.anaconda.com/free/miniconda/">Miniconda</a> and <a href="https://github.com/conda-forge/miniforge">Miniforge</a> (<em>click to expand</em>):</summary>
 
 - You'll need a [shell](https://en.wikipedia.org/wiki/Shell_(computing))
 with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
@@ -64,7 +64,7 @@ with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
 
 <details>
 
-<summary>For <a href="https://pip.pypa.io/en/stable/getting-started/"><code>pip</code></a> - a package manager that comes with Python (<em>click arrow to expand</em>):</summary>
+<summary>For <a href="https://pip.pypa.io/en/stable/getting-started/"><code>pip</code></a> - a package manager that comes with Python (<em>click to expand</em>):</summary>
 
 - Install `git` using your preferred way.
 
@@ -108,8 +108,18 @@ For instructions on running the examples,
 please refer to the [README](./examples)
 file in the `examples` directory.
 
+## Contributing
+
+Thank you for considering contributing to `femder`!
+You can contribute as a user or as developer,
+please read our [contribution guide](./CONTRIBUTING.md).
+
+Remember, no contribution is too small! Every line of code, every documentation update,
+and every bug report helps making the library better for everyone.
+
 ---
 
-Have fun doing acoustics! If you have any thoughts, issues, suggestions, please [open an issue](https://github.com/jvcarli/femder/issues/new).
+Have fun doing acoustics! If you experience any bugs or problems, have any suggestions or ideas,
+please [open an issue](https://github.com/jvcarli/femder/issues/new).
 
 Special thanks to Luiz Augusto Alvim, Dr. Paulo Mareze, Dr. Eric Brandão, Alexandre Piccini and Rinaldi Petrolli.
