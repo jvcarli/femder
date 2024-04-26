@@ -6,8 +6,17 @@
 A Finite Element Method (FEM) code for acoustics written for the undergraduate course
 "Métodos Numéricos em Acústica e Vibrações", ministered by Dr. Paulo Mareze.
 
-**Author**: Luiz Augusto T. Ferraz Alvim <br/>
-**Co-Author**: Dr. Paulo Mareze
+## Acknowledgement
+
+**Original author**: Luiz Augusto T. Ferraz Alvim <br/>
+**Original co-author**: Dr. Paulo Mareze
+
+This repository was initialy a fork from
+[gutoalvim/femder](https://github.com/gutoalvim/femder/), but it was detached.
+It shares its code base from the parent first commit until
+[gutoalvim/femder@`16a7231`](https://github.com/gutoalvim/femder/commit/16a7231).
+From [jvcarli/femder@`a447e21`](https://github.com/jvcarli/femder/commit/a447e21)
+onwards they diverge.
 
 ## Installation
 
