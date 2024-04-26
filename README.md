@@ -28,10 +28,10 @@ Prerequisites:
 **NOTE**: If you're a beginner at programming we strongly recommend that
 you follow the conda installation guide below and download
 [Anaconda Distribution](https://www.anaconda.com/download) - it includes
-Python, [NumPy](https://github.com/numpy/numpy),
-and many other commonly used packages for scientific computing and data science.
-It also includes [conda](https://docs.conda.io/en/latest/),
-a [package manager](https://en.wikipedia.org/wiki/Package_manager)
+Python, [NumPy](https://github.com/numpy/numpy), many other commonly used packages
+for scientific computing and data science and
+[conda](https://docs.conda.io/en/latest/) - a
+[package manager](https://en.wikipedia.org/wiki/Package_manager)
 that makes it easier to install and manage other packages you may need, like `git`.
 
 **Follow the instructions bellow**:
