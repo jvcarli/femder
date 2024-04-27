@@ -15,7 +15,7 @@ A Finite Element Method (FEM) code for acoustics written for the undergraduate c
 
 This repository was initially a fork from
 [gutoalvim/femder](https://github.com/gutoalvim/femder/), but it was detached.
-It shares its code base from the parent first commit until
+It shares its codebase from the parent first commit until
 [gutoalvim/femder@`16a7231`](https://github.com/gutoalvim/femder/commit/16a7231).
 From [jvcarli/femder@`a447e21`](https://github.com/jvcarli/femder/commit/a447e21)
 onwards they diverge.
