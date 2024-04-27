@@ -25,7 +25,8 @@ Prerequisites:
 - Git
 - Python >= 3.9, < 3.12
 
-**NOTE**: If you're a beginner at programming we strongly recommend that
+> [!NOTE]
+> If you're a beginner at programming we strongly recommend that
 you follow the conda installation guide below and download
 [Anaconda Distribution](https://www.anaconda.com/download) - it includes
 Python, [NumPy](https://github.com/numpy/numpy), many other commonly used packages
@@ -50,16 +51,16 @@ with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
 
 - Create and activate your `conda` environment:
 
+  Creating a new `conda` environment for each project you work on
+  is considered a best practice, ensuring better management of dependencies
+  and promoting a cleaner development workflow.
+
   You **MUST** use Python >= 3.9, < 3.12.
 
   ```
   conda create -n myenv python=3.9
   conda activate myenv
   ```
-
-  **NOTE**: Creating a new `conda` environment for each project you work on
-  is considered a best practice, ensuring better management of dependencies
-  and promoting a cleaner development workflow.
 
 - Optional step (only if you haven't `git` installed yet and want `conda` to manage it):
 
