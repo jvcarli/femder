@@ -44,7 +44,7 @@ que facilita a instalação e gestão de outros pacotes que você pode precisar,
 <summary>Para o <a href="https://docs.conda.io"><code>conda</code></a> - um gerenciador de pacotes que vem com <a href="https://www.anaconda.com/download">Anaconda Distribution</a>, <a href="https://docs.anaconda.com/free/miniconda/">Miniconda</a> e <a href="https://github.com/conda-forge/miniforge">Miniforge</a> (<em>clique para expandir</em>):</summary>
 
 - Você precisará de uma [_shell_](https://pt.wikipedia.org/wiki/Shell_(computa%C3%A7%C3%A3o))
-com o `conda` em seu [`caminho (PATH)`](https://pt.wikipedia.org/wiki/Caminho_(computa%C3%A7%C3%A3o)).
+com o `conda` em seu <code><a href="https://pt.wikipedia.org/wiki/Caminho_(computa%C3%A7%C3%A3o)">caminho <em>(PATH)</em></a></code>.
 
   Se você usa o Windows e instalou Anaconda Distribution, Miniconda, ou Miniforge,
   terá acesso aos programas **`Anaconda Prompt`**,
