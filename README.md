@@ -1,6 +1,8 @@
 ![Static Badge](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue)
 ![Static Badge](https://img.shields.io/badge/version-v0.1.0-orange?logo=github)
 
+_Read in other languages: [:us: English](README.md), [:brazil: Português](README.pt-BR.md)_
+
 # femder
 
 A Finite Element Method (FEM) code for acoustics written for the undergraduate course
@@ -30,7 +32,7 @@ Prerequisites:
 you follow the conda installation guide below and download
 [Anaconda Distribution](https://www.anaconda.com/download) - it includes
 Python, [NumPy](https://github.com/numpy/numpy), many other commonly used packages
-for scientific computing and data science and
+for scientific computing and
 [conda](https://docs.conda.io/en/latest/) - a
 [package manager](https://en.wikipedia.org/wiki/Package_manager)
 that makes it easier to install and manage other packages you may need, like `git`.
@@ -52,7 +54,7 @@ with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
 - Create and activate your `conda` environment:
 
   Creating a new `conda` environment for each project you work on
-  is considered a best practice, ensuring better management of dependencies
+  is considered a best practice, ensuring better management and isolation of dependencies
   and promoting a cleaner development workflow.
 
   You **MUST** use Python >= 3.9, < 3.12.
@@ -84,9 +86,9 @@ with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
 
 - Optional step (**recommended**) - consider using a [virtual environment](https://docs.python.org/3/library/venv.html):
 
-  Utilizing a virtual environment with `pip` is recommended as it allows
-  for the isolation of project dependencies, enhancing dependency management
-  and facilitating working across diverse projects.
+  Creating a new virtual environment for each project you work on
+  is considered a best practice, ensuring better management and isolation of dependencies
+  and promoting a cleaner development workflow.
 
   - Create your virtual environment as usual:
 
