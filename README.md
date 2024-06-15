@@ -1,7 +1,8 @@
 ![Static Badge](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue)
-![Static Badge](https://img.shields.io/badge/version-v0.1.0-orange?logo=github)
+![Static Badge](https://img.shields.io/badge/version-v0.2.0-orange?logo=github)
 
-_Read in other languages: [:us: English](README.md), [:brazil: Português](README.pt-BR.md)_
+_Read in other languages: [en-US](https://github.com/jvcarli/femder/blob/main/README.md),
+[pt-BR](https://github.com/jvcarli/femder/blob/main/README.pt-BR.md)_
 
 # femder
 
@@ -27,8 +28,7 @@ Prerequisites:
 - Git
 - Python >= 3.9, < 3.12
 
-> [!NOTE]
-> If you're a beginner at programming we strongly recommend that
+**NOTE**: If you're a beginner at programming we strongly recommend that
 you follow the conda installation guide below and download
 [Anaconda Distribution](https://www.anaconda.com/download) - it includes
 Python, [NumPy](https://github.com/numpy/numpy), many other commonly used packages
@@ -121,14 +121,14 @@ with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
 ## Examples
 
 For instructions on running the examples,
-please refer to the [README](./examples)
+please refer to the [README](https://github.com/jvcarli/femder/tree/main/examples)
 file in the `examples` directory.
 
 ## Contributing
 
 Thank you for considering contributing to `femder`!
 You can contribute as a user or as developer,
-please read our [contribution guide](./CONTRIBUTING.md).
+please read our [contribution guide](https://github.com/jvcarli/femder/blob/main/CONTRIBUTING.md).
 
 Remember, no contribution is too small! Every line of code, every documentation update,
 and every bug report helps making the library better for everyone.
