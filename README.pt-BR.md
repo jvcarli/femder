@@ -25,7 +25,6 @@ eles divergem.
 
 Pré-requisitos:
 
-- Git
 - Python >= 3.9, < 3.12
 
 **Obs.**: Se você é iniciante em programação recomendamos fortemente que
@@ -35,7 +34,7 @@ Python, [NumPy](https://github.com/numpy/numpy), muitos outros pacotes comumente
 para computação científica e
 o [conda](https://docs.conda.io/en/latest/) - um
 [gerenciador de pacotes](https://pt.wikipedia.org/wiki/Sistema_gestor_de_pacotes)
-que facilita a instalação e gestão de outros pacotes que você pode precisar, como o `git`.
+que facilita a instalação e gestão de outros pacotes que você pode precisar.
 
 **Siga as instruções abaixo**:
 
@@ -64,16 +63,10 @@ com o `conda` em seu <code><a href="https://pt.wikipedia.org/wiki/Caminho_(compu
   conda activate meuenv
   ```
 
-- Etapa opcional (somente se você ainda não instalou o `git` e deseja usar o `conda` para gerenciá-lo):
-
-  ```
-  conda install git
-  ```
-
 - Instale o `femder` usando o `pip`:
 
   ```
-  pip install git+https://github.com/jvcarli/femder.git
+  pip install femder
   ```
 
 </details>
@@ -81,8 +74,6 @@ com o `conda` em seu <code><a href="https://pt.wikipedia.org/wiki/Caminho_(compu
 <details>
 
 <summary>Para o <a href="https://pip.pypa.io/en/stable/getting-started/"><code>pip</code></a> - um gerenciador de pacotes que vem com o Python (<em>clique para expandir</em>):</summary>
-
-- Instale o `git` usando sua maneira preferida.
 
 - Etapa opcional (**recomendado**) - considere usar um [ambiente virtual (_virtual environment_)](https://docs.python.org/pt-br/3/library/venv.html):
 
@@ -113,7 +104,7 @@ com o `conda` em seu <code><a href="https://pt.wikipedia.org/wiki/Caminho_(compu
 - Instale o `femder` usando o `pip`:
 
   ```
-  pip install git+https://github.com/jvcarli/femder.git
+  pip install femder
   ```
 
 </details>

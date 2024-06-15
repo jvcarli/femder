@@ -6,7 +6,6 @@ Prerequisites
 
 For installing ``femder`` you'll need:
 
-- Git
 - Python >= 3.9, < 3.12
 
 .. note::
@@ -17,7 +16,7 @@ For installing ``femder`` you'll need:
   and many other commonly used packages for scientific computing and data science.
   It also includes `conda <https://docs.conda.io/en/latest/>`_,
   a `package manager <https://en.wikipedia.org/wiki/Package_manager>`_
-  that makes it easier to install and manage other packages you may need, like ``git``.
+  that makes it easier to install and manage other packages you may need.
 
 
 Conda
@@ -53,13 +52,9 @@ For installing ``femder`` using ``conda`` follow the steps below:
      is considered a best practice, ensuring better management of dependencies
      and promoting a cleaner development workflow.
 
-- Optional step (only if you haven't ``git`` installed yet and want ``conda`` to manage it):
-
-  ``conda install git``
-
 - Install ``femder`` using ``pip``:
 
-  ``pip install git+https://github.com/jvcarli/femder.git``
+  ``pip install femder``
 
 Pip
 ===
@@ -69,8 +64,6 @@ Pip
 `Pip <https://pip.pypa.io/en/stable/getting-started/>`_ is a package manager that comes with Python.
 
 For installing ``femder`` using ``pip`` follow the steps below:
-
-- Install ``git`` using your preferred way.
 
 - Optional step (**recommended**) - consider using a `virtual environment <https://docs.python.org/3/library/venv.html>`_:
 
@@ -96,4 +89,4 @@ For installing ``femder`` using ``pip`` follow the steps below:
 
 - Install ``femder`` using ``pip``:
 
-  ``pip install git+https://github.com/jvcarli/femder.git``
+  ``pip install femder``
