@@ -1,7 +1,8 @@
 ![Static Badge](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue)
-![Static Badge](https://img.shields.io/badge/vers%C3%A3o-v0.1.0-orange?logo=github)
+![Static Badge](https://img.shields.io/badge/vers%C3%A3o-v0.2.0-orange?logo=github)
 
-_Leia em outros idiomas: [:us: English](README.md), [:brazil: Português](README.pt-BR.md)_
+_Leia em outros idiomas: [en-US](https://github.com/jvcarli/femder/blob/main/README.md),
+[pt-BR](https://github.com/jvcarli/femder/blob/main/README.pt-BR.md)_
 
 # femder
 
@@ -27,8 +28,7 @@ Pré-requisitos:
 - Git
 - Python >= 3.9, < 3.12
 
-> [!NOTE]
-> Se você é iniciante em programação recomendamos fortemente que
+**Obs.**: Se você é iniciante em programação recomendamos fortemente que
 siga o guia de instalação para o conda abaixo e baixe a
 [Distribuição Anaconda (_Anaconda Distribution_)](https://www.anaconda.com/download) - ela inclui
 Python, [NumPy](https://github.com/numpy/numpy), muitos outros pacotes comumente usados
@@ -121,14 +121,14 @@ com o `conda` em seu <code><a href="https://pt.wikipedia.org/wiki/Caminho_(compu
 ## Exemplos
 
 Para instruções de como executar os exemplos,
-olhe o arquivo [README (**em inglês**)](./examples) no
+olhe o arquivo [README (**em inglês**)](https://github.com/jvcarli/femder/tree/main/examples) no
 diretório `examples`.
 
 ## Contribuindo
 
 Obrigado por considerar contribuir com o `femder`!
 Você pode contribuir como usuário ou desenvolvedor,
-por favor leia nosso [guia de contribuição (**em inglês**)](./CONTRIBUTING.md).
+por favor leia nosso [guia de contribuição (**em inglês**)](https://github.com/jvcarli/femder/blob/main/CONTRIBUTING.md).
 
 Lembre-se, nenhuma contribuição é pequena demais! Cada linha de código, atualização de documentação,
 e relatório de _bug_ ajuda a tornar a biblioteca melhor para todos.
