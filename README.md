@@ -25,7 +25,6 @@ onwards they diverge.
 
 Prerequisites:
 
-- Git
 - Python >= 3.9, < 3.12
 
 **NOTE**: If you're a beginner at programming we strongly recommend that
@@ -35,7 +34,7 @@ Python, [NumPy](https://github.com/numpy/numpy), many other commonly used packag
 for scientific computing and
 [conda](https://docs.conda.io/en/latest/) - a
 [package manager](https://en.wikipedia.org/wiki/Package_manager)
-that makes it easier to install and manage other packages you may need, like `git`.
+that makes it easier to install and manage other packages you may need.
 
 **Follow the instructions bellow**:
 
@@ -64,16 +63,10 @@ with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
   conda activate myenv
   ```
 
-- Optional step (only if you haven't `git` installed yet and want `conda` to manage it):
-
-  ```
-  conda install git
-  ```
-
 - Install `femder` using `pip`:
 
   ```
-  pip install git+https://github.com/jvcarli/femder.git
+  pip install femder
   ```
 
 </details>
@@ -81,8 +74,6 @@ with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
 <details>
 
 <summary>For <a href="https://pip.pypa.io/en/stable/getting-started/"><code>pip</code></a> - a package manager that comes with Python (<em>click to expand</em>):</summary>
-
-- Install `git` using your preferred way.
 
 - Optional step (**recommended**) - consider using a [virtual environment](https://docs.python.org/3/library/venv.html):
 
@@ -113,7 +104,7 @@ with `conda` in its [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)).
 - Install `femder` using `pip`:
 
   ```
-  pip install git+https://github.com/jvcarli/femder.git
+  pip install femder
   ```
 
 </details>
