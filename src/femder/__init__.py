@@ -23,7 +23,7 @@ from femder.optimization_helpers import (
 )
 from femder.utils import IR, SBIR
 from femder.BEM_3D import BEM3D
-from tmm.tmm import TMM
+from tmma.tmm import TMM
 from femder import plot_tools
 from femder import fem_numerical
 

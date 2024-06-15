@@ -7,7 +7,7 @@ Created on Sat Nov 28 23:33:54 2020
 
 import numpy as np
 from scipy.sparse.linalg import spsolve
-from pyMKL import pardisoSolver
+from pyMKL2 import pardisoSolver
 
 from matplotlib import ticker, gridspec, style, rcParams
 from matplotlib.ticker import FormatStrFormatter
