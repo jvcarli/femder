@@ -81,7 +81,7 @@ For installing ``femder`` using ``pip`` follow the steps below:
 
     - If you use Windows:
 
-      ``source venv\Scripts\activate``
+      ``.\venv\Scripts\activate``
 
     - If you use macOS or a Linux distribution:
 

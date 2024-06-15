@@ -92,7 +92,7 @@ com o `conda` em seu <code><a href="https://pt.wikipedia.org/wiki/Caminho_(compu
     - Se você usa o Windows:
 
       ```
-      source venv\Scripts\activate
+      .\venv\Scripts\activate
       ```
 
     - Se você usa o macOS ou uma distribuição Linux:
