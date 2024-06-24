@@ -24,7 +24,7 @@ classifiers = [
 [tool.setuptools.dynamic]
 version = {attr = "femder.__version__"}
 dependencies = { file = [ "requirements/runtime_requirements.txt"] }
-optional-dependencies.dev_doc = { file = ["requirements/dev_doc_requirements.txt"] }
+optional-dependencies.dev_doc = { file = ["requirements/doc_requirements.txt", "requirements/dev_doc_requirements.txt"] }
 optional-dependencies.doc = { file = ["requirements/doc_requirements.txt"] }
 optional-dependencies.lint = { file = ["requirements/lint_requirements.txt"] }
 
