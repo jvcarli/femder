@@ -1,0 +1,133 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.3
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+```{python}
+import femder as fd
+import numpy as np
+import matplotlib.pyplot as plt
+import plotly.offline as pyo
+import os
+
+pyo.init_notebook_mode()
+##################################################################################
+# Data da medição: 31/05/23
+# Temperatura na sala: 18.6ºC
+# Umidade relativa: 76%
+
+
+##################################################################################
+
+path_to_geo = os.path.join(".\\teste_discretizacao_cubos_3_elem.iges")
+
+# alterar conforme as medições feitas na sala
+temperatura = 25.0 + 273.15
+umidade = 74.0
+pressao_atm = 100900.0
+ind_adiab = 1.4
+R_ar = 287.031    # J/mol.k
+AP = fd.AirProperties(c0=np.sqrt(ind_adiab * R_ar * temperatura), temperature=18.6, humid=umidade, p_atm=pressao_atm)
+fmax = 260  # Fmax é a nossa frequência de schroeder
+AC = fd.AlgControls(AP, freq_init = 20, freq_end = fmax, freq_step = 1)
+
+
+###################################################################################
+S = fd.Source("spherical")
+
+# S.coord = np.array([[-1,2.25,1.2],[1,2.25,1.2]])
+S.coord = np.array([
+                    [1.45, 5.46, 1.2], # Monitor 1
+                    [3.45, 5.46, 1.2]  # Monitor 2
+                   ])  # coordenada da fonte na sala
+S.q = np.array([
+                [0.001], # velocidade de volume F1
+                [0.001]  # velocidade de volume F2
+               ])  # velocidade de volume da fonte
+
+R = fd.Receiver()  # Receptores
+#R.star([2.5,1.6,1.2],0.6)
+R.coord = np.array([
+                    [2.45, 3.73, 1.2], # sweet spot do produtor de áudio
+                    [1.4, 1.0, 1.2],   # acento 1 do sofá
+                    [3.49, 1.0, 1.2]    # acento 2 do sofá
+                   ])  #
+# cada vetor é um receptor seguindo x, y, z
+
+BC = fd.BC(AC, AP)
+BC.normalized_admittance(2, 0.02)  # os números de 2 a 7 são as superfícies da sala e o 0,02 é a admitância
+BC.normalized_admittance(3, 0.02)
+BC.normalized_admittance(4, 0.02)
+BC.normalized_admittance(5, 0.02)
+BC.normalized_admittance(6, 0.02)
+BC.normalized_admittance(7, 0.02)
+BC.normalized_admittance(8, 0.02)
+BC.normalized_admittance(9, 0.02)
+BC.normalized_admittance(10, 0.02)
+BC.normalized_admittance(11, 0.02)
+BC.normalized_admittance(12, 0.02)
+
+grid = fd.GridImport3D(AP, path_to_geo, S, R, fmax=fmax, num_freq=6, scale=1, order=1, load_method='meshio')
+obj_sem_tratamento = fd.FEM3D(grid, S, R, AP, AC, BC)
+
+# ---------------------------------------------------------------------------------------
+
+obj_sem_tratamento.plot_problem(renderer=None, surface_opacity= 0.2)
+
+# -----------------------------------------------------------------------------------------
+
+obj_sem_tratamento.compute()
+
+###################################################################################
+
+print('Distâncias das coordenadas de cada receptor em relação ao nó mais próximo:')
+obj_sem_tratamento.evaluate(R, True)  # Calcula a pressão nos receptores, respectivamente, em Pa
+
+###################################################################################
+
+plt.style.use('seaborn-v0_8')
+plt.figure(figsize=(15, 6))
+
+if len(obj_sem_tratamento.R.coord) == 1:
+    plt.semilogx(obj_sem_tratamento.freq, fd.p2SPL(obj_sem_tratamento.pR), linestyle='-', label=f'R | {obj_sem_tratamento.R.coord[0]}m')
+else:
+    for i in range(len(obj_sem_tratamento.R.coord)):
+        plt.semilogx(obj_sem_tratamento.freq, fd.p2SPL(obj_sem_tratamento.pR[:, i]), linestyle='-',
+                     label=f'R{i} | {obj_sem_tratamento.R.coord[i, :]}m')
+
+if len(obj_sem_tratamento.R.coord) > 1:
+    plt.semilogx(obj_sem_tratamento.freq, np.mean(fd.p2SPL(obj_sem_tratamento.pR), axis=1), linestyle='-', label='Average',
+                 linewidth=5)
+
+plt.grid(linestyle='--', which='both')
+plt.legend(loc='best')
+plt.xlabel('Frequência [Hz]', fontsize=16)
+plt.ylabel('NPS [dB]', fontsize=16)
+plt.xticks([20, 27, 30, 40, 50, 55, 70, 80, 94, 100, 117, 163, 210, 230, 260], 
+           [20, 27, 30, 40, 50, 55, 70, 80, 94, 100, 117, 163, 210, 230, 260])
+plt.tight_layout()
+plt.savefig("duck_room_shoe_box.pdf")
+plt.show()
+
+####################################################################################
+
+obj_sem_tratamento.pressure_field(frequencies=55, renderer=None, saveFig=False, axis=['xy', 'yz'],
+                            camera_angles=['diagonal_front'], extension='pdf')
+
+obj_sem_tratamento.pressure_field(frequencies=75, renderer=None, saveFig=False, axis=['xy', 'yz'],
+                            camera_angles=['diagonal_front'], extension='pdf')
+
+obj_sem_tratamento.pressure_field(frequencies=115, renderer=None, saveFig=False, axis=['xy', 'yz'],
+                            camera_angles=['diagonal_front'], extension='pdf')
+
+##################################################################################
+```
